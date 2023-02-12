@@ -1,0 +1,10 @@
+C:\Users\Admin\source\repos\ATM.UI\ATM.DLL\bin\Debug\netstandard2.1\ATM.DLL.deps.json
+C:\Users\Admin\source\repos\ATM.UI\ATM.DLL\bin\Debug\netstandard2.1\ATM.DLL.dll
+C:\Users\Admin\source\repos\ATM.UI\ATM.DLL\bin\Debug\netstandard2.1\ATM.DLL.pdb
+C:\Users\Admin\source\repos\ATM.UI\ATM.DLL\obj\Debug\netstandard2.1\ATM.DLL.csproj.AssemblyReference.cache
+C:\Users\Admin\source\repos\ATM.UI\ATM.DLL\obj\Debug\netstandard2.1\ATM.DLL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\source\repos\ATM.UI\ATM.DLL\obj\Debug\netstandard2.1\ATM.DLL.AssemblyInfoInputs.cache
+C:\Users\Admin\source\repos\ATM.UI\ATM.DLL\obj\Debug\netstandard2.1\ATM.DLL.AssemblyInfo.cs
+C:\Users\Admin\source\repos\ATM.UI\ATM.DLL\obj\Debug\netstandard2.1\ATM.DLL.csproj.CoreCompileInputs.cache
+C:\Users\Admin\source\repos\ATM.UI\ATM.DLL\obj\Debug\netstandard2.1\ATM.DLL.dll
+C:\Users\Admin\source\repos\ATM.UI\ATM.DLL\obj\Debug\netstandard2.1\ATM.DLL.pdb
