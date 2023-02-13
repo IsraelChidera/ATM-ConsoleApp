@@ -1,4 +1,5 @@
 ﻿using ATM.DLL;
+using ATM.DLL.Interfaces;
 using ATM.DLL.Model;
 using System;
 using System.Threading.Tasks;
@@ -7,45 +8,46 @@ namespace ATM.BLL
 {
     public class ValidateInputs
     {
-        public async Task CreateDb() 
+        private string _cardNumber;
+        private string _pinNumber;
+        public async Task CreateDb()
         {
-            using (ICustomerInterface customerService = new CustomerService(new AtmDbConnection()) )
-            {
-                await customerService.CreateCustomerDb();
-                await customerService.CreateCustomerTable();
-            }
-                
-        }
-       
-        public async Task ValidateCustomerInputs()
-        {
-            ValidateCardNumber();
-            ValidatePinNumber();
-
             using (ICustomerInterface customerService = new CustomerService(new AtmDbConnection()))
             {
-                {
-                    var customer = new CustomerViewModel
-                    {
-                        Pin = "2323",
-                        CardNumber = "323233"
-                    };
-                    await customerService.CreateCustomer(customer);
-                };
+                await customerService.CreateCustomerTable();
             }
-            
+
         }
 
-        public void ValidateCardNumber()
+        public async Task ValidateCustomerInputs()
         {
-            Console.WriteLine("Card number must be up to 6 digits");
+            await CreateDb();
+            await ValidateCardDetails();            
+        }
 
-            string cardNumber = Console.ReadLine();
+        public async Task InsertCustomerInputs()
+        {
+            ICustomerInterface insertInputs = new CustomerService(new AtmDbConnection());
+            CustomerViewModel customer = new CustomerViewModel
+            {
+                CardNumber = "569467",
+                Pin = "1234",
+            };
+
+            await insertInputs.CreateCustomer(customer);
+        }
+
+        public async Task ValidateCardDetails()
+        {
+            Console.WriteLine("Enter Card Number\nCard number must be 6 digits");
+
+            _cardNumber = Console.ReadLine();
+            //public int 
             while (true)
             {
                 try
                 {
-                    if (cardNumber.Length == 6 && int.TryParse(cardNumber, out int cardNum))
+                    if (_cardNumber.Length == 6 && int.TryParse(_cardNumber, out int cardNum))
                     {
                         Utility.Animation();
                         Console.WriteLine("\n**********************************************");
@@ -54,6 +56,7 @@ namespace ATM.BLL
                         Console.WriteLine($"Card number: {cardNum}");
                         Console.ResetColor();
                         Console.WriteLine("**********************************************\n");
+
                         break;
                     }
                     else
@@ -61,7 +64,7 @@ namespace ATM.BLL
                         Utility.Animation();
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("\nInvalid input. Please try again");
-                        cardNumber = Console.ReadLine();
+                        _cardNumber = Console.ReadLine();
                         Console.ResetColor();
                     }
                 }
@@ -76,25 +79,18 @@ namespace ATM.BLL
                 }
             }
 
-
-        }
-
-        public void ValidatePinNumber()
-        {
-
             Console.WriteLine("\nPin must be up to 4 digits");
-            string pinNumber = Console.ReadLine();
-            Console.WriteLine(pinNumber);
+            _pinNumber = Console.ReadLine();
 
             while (true)
             {
                 try
                 {
-                    if (pinNumber.Length == 4 && int.TryParse(pinNumber, out int pinNum))
+                    if (_pinNumber.Length == 4 && int.TryParse(_pinNumber, out int pinNum))
                     {
                         Utility.Animation();
                         Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("\n**********************************************");
+                        Console.WriteLine("**********************************************");
                         Console.WriteLine($"PIN: {pinNum}");
                         Console.WriteLine("Congrats... You can now do your transactions");
                         Console.WriteLine("**********************************************");
@@ -104,7 +100,7 @@ namespace ATM.BLL
                     else
                     {
                         Console.WriteLine("Invalid PIN. Please try again");
-                        pinNumber = Console.ReadLine();
+                        _pinNumber = Console.ReadLine();
                     }
                 }
                 catch (Exception exception)
@@ -116,6 +112,24 @@ namespace ATM.BLL
                     continue;
                 }
             }
+
+
+
+            Console.WriteLine(_pinNumber);
+            Console.WriteLine(_cardNumber);
+
+            using (ICustomerInterface insertInputs = new CustomerService(new AtmDbConnection()))
+            {
+                CustomerViewModel customerDetails = new CustomerViewModel
+                {
+                    CardNumber = _cardNumber,
+                    Pin = _pinNumber,
+                };
+
+                await insertInputs.CreateCustomer(customerDetails);
+            }
+
         }
+
     }
 }

@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ATM.DLL
+namespace ATM.DLL.Interfaces
 {
-    public interface ICustomerInterface:IDisposable
+    public interface ICustomerInterface : IDisposable
     {
-        Task CreateCustomerDb();        
+        //Task CreateCustomerDb();        
         Task CreateCustomerTable();
 
         Task<int> CreateCustomer(CustomerViewModel customer);
     }
 }
- 

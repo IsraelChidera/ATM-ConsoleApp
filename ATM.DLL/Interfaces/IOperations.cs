@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ATM.BLL
+namespace ATM.DLL.Interfaces
 {
-    public class AtmOperations
+    public interface IOperations
     {
     }
 }

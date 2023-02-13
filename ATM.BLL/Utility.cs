@@ -14,6 +14,16 @@ namespace ATM.BLL
             get; set;
         }
 
+        public static void HomeContent()
+        {
+            Console.WriteLine("*************************************************");
+            Console.WriteLine("\tAutomated Teller Machine");
+            Console.WriteLine("*************************************************");
+
+            Console.WriteLine();
+            PressEnterToContinue();
+        }
+
         public static void Animation(int timer = 15)
         {
             for (var i = 0; i < timer; i++)

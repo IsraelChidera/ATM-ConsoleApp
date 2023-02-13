@@ -7,22 +7,19 @@ namespace ATM.UI
     internal class Program
     {
         static async Task Main(string[] args)
-        {
-            Console.WriteLine("Hello, World!");
+        {            
+            Utility.HomeContent();
 
             ValidateInputs validate = new();
+  
+            //await validate.InsertCustomerInputs();
 
-            await validate.CreateDb();
-            /*using (ICustomerInterface customerService = new CustomerService(new AtmDbConnection()))
-            {
-                var customer = new CustomerViewModel
-                {
-                    Pin = "2323",
-                    CardNumber = "323233"
-                };
-                await customerService.CreateCustomer(customer);
-            };*/
-            await validate.ValidateCustomerInputs();
+            //await validate.ValidateCustomerInputs();
+
+
+
+            
+            await validate.ValidateCardDetails();
         }
     }
 }

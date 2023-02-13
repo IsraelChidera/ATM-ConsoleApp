@@ -11,7 +11,7 @@ namespace ATM.DLL
         private readonly string _connectionString;
         private SqlConnection _dbConnection = null;
 
-
+        //Initial Catalog = AtmDBApp;
         public AtmDbConnection() : this(@"Data Source=ISRAEL-CHIDERA\SQLEXPRESS01;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;database=master")
         {
 

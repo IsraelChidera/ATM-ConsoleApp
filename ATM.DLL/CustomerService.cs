@@ -1,5 +1,7 @@
-﻿using ATM.DLL.Model;
+﻿using ATM.DLL.Interfaces;
+using ATM.DLL.Model;
 using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Data;
 using System.Threading.Tasks;
@@ -19,7 +21,7 @@ namespace ATM.DLL
 
 
 
-        public async Task CreateCustomerDb()
+        /*public async Task CreateCustomerDb()
         {
             var connection = await _dbContext.OpenConnection();
 
@@ -52,14 +54,13 @@ namespace ATM.DLL
 
 
 
-        }
+        }*/
 
         public async Task CreateCustomerTable()
         {
             var connection = await _dbContext.OpenConnection();
 
-            string tableName = "Customers";
-            string checkTableExistenceQuery = $"SELECT * FROM MyDb WHERE TABLE_NAME = '{tableName}'";
+            string tableName = "Customers";            
 
             string query = $"CREATE TABLE {tableName} " +
                 $"(CustomerID int Primary Key Identity(1,1), " +
@@ -115,7 +116,8 @@ namespace ATM.DLL
                     //int customerId = (int) await command.ExecuteScalarAsync();
                     long customerId = (long)await command.ExecuteScalarAsync();
 
-                    Console.WriteLine((int)customerId);
+                    
+                    Console.WriteLine($"You have succesfully added a customer with Id:{(int)customerId} to the Db");
                     return (int)customerId;
                 }
             }
