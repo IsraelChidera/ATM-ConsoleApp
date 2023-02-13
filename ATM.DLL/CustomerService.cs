@@ -112,10 +112,8 @@ namespace ATM.DLL
                         Direction = ParameterDirection.Input,
                     };
                     command.Parameters.Add(parameter);
-
-                    //int customerId = (int) await command.ExecuteScalarAsync();
+                    
                     long customerId = (long)await command.ExecuteScalarAsync();
-
                     
                     Console.WriteLine($"You have succesfully added a customer with Id:{(int)customerId} to the Db");
                     return (int)customerId;

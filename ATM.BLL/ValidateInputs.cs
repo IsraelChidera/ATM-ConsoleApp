@@ -16,7 +16,6 @@ namespace ATM.BLL
             {
                 await customerService.CreateCustomerTable();
             }
-
         }
 
         public async Task ValidateCustomerInputs()

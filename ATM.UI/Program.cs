@@ -16,10 +16,11 @@ namespace ATM.UI
 
             //await validate.ValidateCustomerInputs();
 
-
+            AtmOperations operations = new AtmOperations();
+            await operations.RunWithdraw();
 
             
-            await validate.ValidateCardDetails();
+            //await validate.ValidateCardDetails();
         }
     }
 }
