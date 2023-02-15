@@ -10,7 +10,7 @@ namespace ATM.DLL.Interfaces
     {
         //Task CreateCustomerDb();        
         Task CreateCustomerTable();
-
+        Task CreateDb();
         Task<int> CreateCustomer(CustomerViewModel customer);
     }
 }

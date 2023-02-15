@@ -6,10 +6,16 @@ namespace ATM.DLL.Interfaces
 {
     public interface IOperations : IDisposable
     {
-        Task<int> Deposit(int amount);
+        Task<int> Deposit(DepositViewModel depositView);
+
         Task<int> Withdraw(WithdrawViewModel withdraw);
-        Task<int> Transfer(int amount);
+
+        Task<int> Transfer(TransferViewModel transfer);
+
+        Task CreateTransferTable();
 
         Task CreateWithdrawTable();
+
+        Task CreateDepositTable();
     }
 }

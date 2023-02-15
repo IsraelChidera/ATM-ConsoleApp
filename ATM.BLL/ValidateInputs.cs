@@ -1,6 +1,7 @@
 ﻿using ATM.DLL;
 using ATM.DLL.Interfaces;
 using ATM.DLL.Model;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Threading.Tasks;
 
@@ -10,35 +11,22 @@ namespace ATM.BLL
     {
         private string _cardNumber;
         private string _pinNumber;
-        public async Task CreateDb()
+        public async Task CreateDbAndTable()
         {
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+            //builder.cat
+            //builder.ToString()
             using (ICustomerInterface customerService = new CustomerService(new AtmDbConnection()))
             {
+                await customerService.CreateDb();
                 await customerService.CreateCustomerTable();
             }
-        }
-
-        public async Task ValidateCustomerInputs()
-        {
-            await CreateDb();
-            await ValidateCardDetails();            
-        }
-
-        public async Task InsertCustomerInputs()
-        {
-            ICustomerInterface insertInputs = new CustomerService(new AtmDbConnection());
-            CustomerViewModel customer = new CustomerViewModel
-            {
-                CardNumber = "569467",
-                Pin = "1234",
-            };
-
-            await insertInputs.CreateCustomer(customer);
-        }
+            
+        }      
 
         public async Task ValidateCardDetails()
         {
-            Console.WriteLine("Enter Card Number\nCard number must be 6 digits");
+            Console.WriteLine("\nEnter Card Number\nCard number must be 6 digits");
 
             _cardNumber = Console.ReadLine();
             //public int 
@@ -61,6 +49,7 @@ namespace ATM.BLL
                     else
                     {
                         Utility.Animation();
+                        Console.WriteLine();
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("\nInvalid input. Please try again");
                         _cardNumber = Console.ReadLine();
@@ -130,5 +119,12 @@ namespace ATM.BLL
 
         }
 
+
+        //Run this part
+        public async Task ValidateCustomerInputs()
+        {
+            await CreateDbAndTable();
+            await ValidateCardDetails();
+        }
     }
 }

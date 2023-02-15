@@ -12,32 +12,26 @@ namespace ATM.DLL
     {
         private readonly AtmDbConnection _dbContext;
         private bool _disposed;
-        private string _databaseName = "DbTest";
+        private string _databaseName = "TestDb";
 
         public CustomerService(AtmDbConnection dbContext)
         {
             _dbContext = dbContext;
         }
 
-
-
-        /*public async Task CreateCustomerDb()
+        public async Task CreateDb()
         {
+
             var connection = await _dbContext.OpenConnection();
 
 
             string checkDatabaseExistenceQuery = $"SELECT * FROM sys.databases WHERE name='{_databaseName}'";
 
-            string query = "CREATE DATABASE MyDatabase ON PRIMARY " +
-                 "(NAME = MyDatabase_Data, " +
-                 "FILENAME = 'C:\\MyDatabaseData.mdf', " +
-                 "SIZE = 2MB, MAXSIZE = 10MB, FILEGROWTH = 10%)" +
-                 "LOG ON (NAME = MyDatabase_Log, " +
-                 "FILENAME = 'C:\\MyDatabaseLog.ldf', " +
-                 "SIZE = 1MB, " +
-                 "MAXSIZE = 5MB, " +
-                 "FILEGROWTH = 10%)";
-
+            //string query = "CREATE DATABASE TestDb";
+            string query = $"IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = '{_databaseName}') " +
+                $"BEGIN " +
+                $"CREATE DATABASE {_databaseName}; " +
+                $"END";
 
             using (SqlCommand dbCommand = new SqlCommand(query, connection))
             {
@@ -48,13 +42,13 @@ namespace ATM.DLL
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.Message);                    
                 }
             }
 
 
 
-        }*/
+        }
 
         public async Task CreateCustomerTable()
         {
@@ -62,7 +56,7 @@ namespace ATM.DLL
 
             string tableName = "Customers";            
 
-            string query = $"CREATE TABLE {tableName} " +
+            string query = $"Use {_databaseName}; CREATE TABLE {tableName} " +
                 $"(CustomerID int Primary Key Identity(1,1), " +
                 $"CardNumber varchar(50), " +
                 $"Pin varchar(50) " +
@@ -91,7 +85,9 @@ namespace ATM.DLL
             {
                 var connection = await _dbContext.OpenConnection();
 
-                string query = "INSERT INTO Customers (CardNumber, Pin) VALUES(@CardNumber, @Pin) SELECT CAST(SCOPE_IDENTITY() AS BIGINT) ";
+                string query = $"Use {_databaseName}; " +
+                    $"INSERT INTO Customers (CardNumber, Pin) " +
+                    $"VALUES(@CardNumber, @Pin) SELECT CAST(SCOPE_IDENTITY() AS BIGINT) ";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
