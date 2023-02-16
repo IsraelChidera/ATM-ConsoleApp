@@ -25,10 +25,9 @@ namespace ATM.DLL
 
             string tableName = "Withdraw";
             string query = $"Use {_databaseName}; CREATE TABLE {tableName} " +
-                $"(WithdrawId int Primary Key Identity(1,1), " +
-                $"Name varchar(50), " +
-                $"AccountNumber varchar(50), " +
-                $"Amount varchar(50) " +
+                $"(WithdrawId int Primary Key Identity(1,1), " +              
+                $"Balance int, " +
+                $"Amount int " +
                 ");";
 
             using (SqlCommand command = new SqlCommand(query, connection))
@@ -51,25 +50,18 @@ namespace ATM.DLL
             try
             {
                 var connection = await _dbContext.OpenConnection();
-                string query = $"Use {_databaseName}; INSERT INTO Withdraw (Name, AccountNumber, Amount) " +
-                    "VALUES(@Name, @AccountNumber, @Amount) SELECT CAST(SCOPE_IDENTITY() AS BIGINT)";
+                string query = $"Use {_databaseName}; INSERT INTO Withdraw (Balance, Amount) " +
+                    "VALUES( @Balance, @Amount) SELECT CAST(SCOPE_IDENTITY() AS BIGINT)";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
+
+
                     SqlParameter parameter = new SqlParameter()
                     {
-                        ParameterName = "Name",
-                        Value = withdraw.Name,
-                        SqlDbType = SqlDbType.VarChar,
-                        Direction = ParameterDirection.Input,
-                    };
-                    command.Parameters.Add(parameter);
-
-                    parameter = new SqlParameter()
-                    {
-                        ParameterName = "AccountNumber",
-                        Value = withdraw.AccountNumber,
-                        SqlDbType = SqlDbType.VarChar,
+                        ParameterName = "Balance",
+                        Value = withdraw.Balance,
+                        SqlDbType = SqlDbType.Int,
                         Direction = ParameterDirection.Input,
                     };
                     command.Parameters.Add(parameter);
@@ -78,7 +70,7 @@ namespace ATM.DLL
                     {
                         ParameterName = "Amount",
                         Value = withdraw.Amount,
-                        SqlDbType = SqlDbType.VarChar,
+                        SqlDbType = SqlDbType.Int,
                         Direction = ParameterDirection.Input,
                     };
                     command.Parameters.Add(parameter);

@@ -5,9 +5,8 @@ using System.Text;
 namespace ATM.DLL.Model
 {
     public class WithdrawViewModel
-    {
-        public string Name { get; set; }
-        public string AccountNumber { get; set; }
-        public string Amount { get; set; }
+    {        
+        public int Balance { get; set; }
+        public int Amount { get; set; }
     }
 }

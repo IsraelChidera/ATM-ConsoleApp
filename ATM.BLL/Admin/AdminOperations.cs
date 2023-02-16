@@ -41,6 +41,7 @@ namespace ATM.BLL.Admin
                     if (admin.Username == username && admin.Password == password)
                     {
                         isAuthenticated = true;
+                        AdminTransactions();
                         break;
                     };
                 };
@@ -55,7 +56,6 @@ namespace ATM.BLL.Admin
                     Console.WriteLine("Failed attempt logging in");
                 }
 
-
             }
         }
 
@@ -64,19 +64,25 @@ namespace ATM.BLL.Admin
             bool check = true;
             while (check)
             {
-                Console.WriteLine("\nHello Admin\nWhat do you want to do...\nPress 1: To View all deposit  " +
-                    "as a user\nPress 2: To login as an admin\nPress 0: To exit application\n");
+                Console.WriteLine("\nHello Admin\nWhat do you want to do..." +
+                    "\nPress 1: To view all deposit transactions " +
+                    "\nPress 2: To view all withdrawal transactions " +
+                    "\nPress 3: To view all transfer transactions " +
+                    "\nPress 0: To exit\n");
                 string option = Console.ReadLine();
-
 
                 switch (option)
                 {
                     case "1":
-                        Console.WriteLine("User login");                        
+                        Console.WriteLine("Deposit transaction");                        
                         check = false;
                         break;
                     case "2":
-                        Console.WriteLine("Admin logins");                        
+                        Console.WriteLine("Withdrawal transaction");
+                        check = false;
+                        break;
+                    case "3":
+                        Console.WriteLine("Transfer transaction");
                         check = false;
                         break;
                     case "0":

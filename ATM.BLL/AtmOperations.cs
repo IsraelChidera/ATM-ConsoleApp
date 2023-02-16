@@ -13,23 +13,64 @@ namespace ATM.BLL
             using (IOperations withdraw = new OperationService(new AtmDbConnection()))
             {
                 await withdraw.CreateWithdrawTable();
-            }
+            }           
 
-            string name = "Edeh";
-            string accountNumber = "676376";
-            string amount = "3232";
+            int balance = 275000;
 
-            using (IOperations withdraw = new OperationService(new AtmDbConnection()))
+            Console.WriteLine("\n****************************************************");            
+            Console.WriteLine($"Your current balance is ${balance}");
+            Console.WriteLine("****************************************************\n");
+
+            while (true)
             {
-                WithdrawViewModel userWithdraw = new WithdrawViewModel
-                {
-                    Name = name,
-                    AccountNumber = accountNumber,
-                    Amount = amount,
-                };
+                Console.Write("Enter amount to withdraw: ");
+                string input = Console.ReadLine();
+                int withdrawAmount;
 
-                await withdraw.Withdraw(userWithdraw);
+                if (!int.TryParse(input, out withdrawAmount))
+                {
+                    Console.WriteLine("\nInvalid amount. Please try again.\n");
+                    continue;
+                }
+
+                if (withdrawAmount > balance)
+                {
+                    Console.WriteLine("Insufficient funds.");
+                }
+                else
+                {
+                    balance -= withdrawAmount;
+                    Console.WriteLine($"\nSuccessfully withdrew ${withdrawAmount}.\nYour new balance is ${balance}.\n");
+
+                    //int amount = withdrawAmount;
+
+                    using (IOperations withdraw = new OperationService(new AtmDbConnection()))
+                    {
+                        WithdrawViewModel userWithdraw = new WithdrawViewModel
+                        {                           
+                            Balance = balance,
+                            Amount = withdrawAmount,
+                        };
+
+                        await withdraw.Withdraw(userWithdraw);
+                    }
+                }
+
+                Console.Write("Do you want to perform another transaction? (y/n): ");
+                input = Console.ReadLine();
+
+                if (input.ToLower() != "y")
+                {
+                    Console.WriteLine("Thank you for using the ATM!");
+                    break;
+                }
+
+                
             }
+
+            /*string name = "Edeh";
+            string accountNumber = "676376";*/
+           
 
         }
 

@@ -59,7 +59,8 @@ namespace ATM.UI
 
             while (check)
             {
-                Console.WriteLine("Hi! there\nWhat do you want to do?\nType 1: Deposit\nType 2: Withdraw\nType 3: Transfer");
+                start:  Console.WriteLine("\nHi! there\nWhat do you want to do?\nPress 1: Deposit\nPress 2: Withdraw " +
+                    "\nPress 3: Transfer\nPress 0: Exit");
 
                 string option = Console.ReadLine();
                 if (true)
@@ -67,26 +68,33 @@ namespace ATM.UI
                     switch (option)
                     {
                         case "1":
+                            Console.Clear();
                             Console.WriteLine("Deposit");
                             //Deposit class
                             await operations.RunDeposit();
                             check = false;
                             break;
                         case "2":
+                            Console.Clear();
                             Console.WriteLine("Withdraw");
                             //withdraw class
                             //AtmOperations operations = new AtmOperations();
-                            await operations.RunWithdraw(); 
-                            check = false;
-                            break;
+                            await operations.RunWithdraw();
+                            goto start;
+                            //check = false;
+                            //break;
                         case "3":
+                            Console.Clear();
                             Console.WriteLine("Transfer");
                             //Transfer class
                             await operations.RunTransfer();
                             check = false;
                             break;
                         case "0":
-                            Console.WriteLine("Exit user");
+                            Console.Clear();
+                            Console.WriteLine("Exiting . . .");
+                            Console.WriteLine("We will love to have you back");
+
                             check = false;
                             break;
                         default:
