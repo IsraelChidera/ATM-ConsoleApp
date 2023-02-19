@@ -10,7 +10,8 @@ namespace ATM.DLL.Model
         //public string Name;
         //public DateTime CreatedOn;
         public string CardNumber;
-        public string Pin; 
+        public string Pin;
+        public DateTime LogTime;
         //public List<Transactions> transactions;
     }
 }

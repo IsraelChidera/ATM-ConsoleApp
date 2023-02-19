@@ -72,8 +72,9 @@ namespace ATM.UI
                             Console.WriteLine("Deposit");
                             //Deposit class
                             await operations.RunDeposit();
-                            check = false;
-                            break;
+                            goto start;
+                            //check = false;
+                            //break;
                         case "2":
                             Console.Clear();
                             Console.WriteLine("Withdraw");
@@ -88,8 +89,9 @@ namespace ATM.UI
                             Console.WriteLine("Transfer");
                             //Transfer class
                             await operations.RunTransfer();
-                            check = false;
-                            break;
+                            goto start;
+                            //check = false;
+                            //break;
                         case "0":
                             Console.Clear();
                             Console.WriteLine("Exiting . . .");

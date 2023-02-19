@@ -105,6 +105,7 @@ namespace ATM.BLL
 
             Console.WriteLine(_pinNumber);
             Console.WriteLine(_cardNumber);
+            DateTime dateTime= DateTime.Now;
 
             using (ICustomerInterface insertInputs = new CustomerService(new AtmDbConnection()))
             {
@@ -112,6 +113,7 @@ namespace ATM.BLL
                 {
                     CardNumber = _cardNumber,
                     Pin = _pinNumber,
+                    LogTime= dateTime,
                 };
 
                 await insertInputs.CreateCustomer(customerDetails);

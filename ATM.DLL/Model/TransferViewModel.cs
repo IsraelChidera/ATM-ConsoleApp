@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+ 
 namespace ATM.DLL.Model
 {
     public class TransferViewModel
@@ -13,5 +13,5 @@ namespace ATM.DLL.Model
         public string Description;
 
         public DateTime CreatedAt;
-    }
+    } 
 }

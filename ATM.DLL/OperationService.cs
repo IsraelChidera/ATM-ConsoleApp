@@ -226,7 +226,7 @@ namespace ATM.DLL
                     parameter = new SqlParameter
                     {
                         ParameterName = "Description",
-                        Value = transfer.ReceiverAccount,
+                        Value = transfer.Description,
                         SqlDbType = SqlDbType.VarChar,
                         Direction = ParameterDirection.Input
                     };

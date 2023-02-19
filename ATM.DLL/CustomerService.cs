@@ -53,13 +53,14 @@ namespace ATM.DLL
         public async Task CreateCustomerTable()
         {
             var connection = await _dbContext.OpenConnection();
-
+            
             string tableName = "Customers";            
 
             string query = $"Use {_databaseName}; CREATE TABLE {tableName} " +
                 $"(CustomerID int Primary Key Identity(1,1), " +
                 $"CardNumber varchar(50), " +
-                $"Pin varchar(50) " +
+                $"Pin varchar(50), " +
+                $"LogTime varchar(50)"+
                 ");";
 
             using (SqlCommand createCommand = new SqlCommand(query, connection))
@@ -86,8 +87,8 @@ namespace ATM.DLL
                 var connection = await _dbContext.OpenConnection();
 
                 string query = $"Use {_databaseName}; " +
-                    $"INSERT INTO Customers (CardNumber, Pin) " +
-                    $"VALUES(@CardNumber, @Pin) SELECT CAST(SCOPE_IDENTITY() AS BIGINT) ";
+                    $"INSERT INTO Customers (CardNumber, Pin, LogTime) " +
+                    $"VALUES(@CardNumber, @Pin, @Log) SELECT CAST(SCOPE_IDENTITY() AS BIGINT) ";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -108,7 +109,16 @@ namespace ATM.DLL
                         Direction = ParameterDirection.Input,
                     };
                     command.Parameters.Add(parameter);
-                    
+
+                    parameter = new SqlParameter()
+                    {
+                        ParameterName = "@Log",
+                        Value = customer.LogTime,
+                        SqlDbType = SqlDbType.DateTime,
+                        Direction = ParameterDirection.Input,
+                    };
+                    command.Parameters.Add(parameter);
+
                     long customerId = (long)await command.ExecuteScalarAsync();
                     
                     Console.WriteLine($"You have succesfully added a customer with Id:{(int)customerId} to the Db");
