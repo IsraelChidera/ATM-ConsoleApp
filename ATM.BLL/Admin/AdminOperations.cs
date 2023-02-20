@@ -15,7 +15,7 @@ namespace ATM.BLL.Admin
 
         List<AdminLoginViewModel> adminCredentials = new List<AdminLoginViewModel>
         {
-            new AdminLoginViewModel{Username="admin", Password="0260"},
+            new AdminLoginViewModel{Username="admin", Password="2206"},
             new AdminLoginViewModel{Username="icecode", Password="6002"},
         };
 

@@ -65,12 +65,12 @@ namespace ATM.BLL
                     goto Start;
                 }
 
-                Begin: Console.Write("Do you want to perform another transaction? (y/n): ");
+            Begin: Console.Write("Do you want to perform another transaction? (y/n): ");
                 string option = Console.ReadLine();
 
                 switch (option)
                 {
-                    case "y": 
+                    case "y":
                         //Console.WriteLine();
                         goto Start;
 
@@ -96,15 +96,15 @@ namespace ATM.BLL
             {
                 await deposit.CreateDepositTable();
             }
-
+            Console.Clear();
             Console.WriteLine("\n====================================================");
-            Console.WriteLine($"Deposit");
+            Console.WriteLine($"DEPOSIT");
             Console.WriteLine("====================================================\n");
 
             while (true)
             {
                 Console.WriteLine("Amount to be deposited must be more than $50");
-                Start: Console.WriteLine("What amount do you want to deposit?");
+            Start: Console.WriteLine("What amount do you want to deposit?");
                 string amount = Console.ReadLine();
 
                 int amt;
@@ -121,14 +121,14 @@ namespace ATM.BLL
                 }
 
 
-                Description:  Console.WriteLine("\nWrite a short description here ...");
-                string description = Console.ReadLine();                
+            Description: Console.WriteLine("\nWrite a short description here ...");
+                string description = Console.ReadLine();
 
                 if (description.Length < 5)
                 {
                     Console.WriteLine("Description length must be longer than 5");
                     goto Description;
-                }                
+                }
 
                 else
                 {
@@ -143,7 +143,7 @@ namespace ATM.BLL
                         await deposit.Deposit(userDeposit);
                     }
                 }
-                
+
             Begin: Console.Write("Do you want to perform another transaction? (y/n): ");
                 string option = Console.ReadLine();
 
@@ -162,20 +162,6 @@ namespace ATM.BLL
                 }
             };
 
-            /*string description = "Money for books";
-            string amount = "3232";
-
-            using (IOperations deposit = new OperationService(new AtmDbConnection()))
-            {
-                DepositViewModel userDeposit = new DepositViewModel
-                {                                     
-                    Description = description,
-                    Amount = amount
-                };
-
-                await deposit.Deposit(userDeposit);
-            }
-            */
         }
 
         public async Task RunTransfer()
@@ -185,40 +171,75 @@ namespace ATM.BLL
                 await transfer.CreateTransferTable();
             }
 
-            // Simulate account balances
-            /*decimal balance = 1000.00m;*/
-            decimal receiverBalance = 200.00m;
+            Console.Clear();
+            Console.WriteLine("\n====================================================");
+            Console.WriteLine($"TRANSFER");
+            Console.WriteLine("====================================================\n");
+
 
             while (true)
             {
                 try
-                {
-                    // Collect user input                                       
-                    Console.Write("Please enter the recipient's account number: ");
-                    int receiverAccountNumber = int.Parse(Console.ReadLine());
+                {                                                      
+                    Receiver: Console.WriteLine("\nPlease enter the recipient's account number ");
+                    Console.WriteLine("Account length must be greater than 5");
 
-                    Console.Write("Please enter the amount you wish to transfer: ");
-                    int transferAmount = int.Parse(Console.ReadLine());
+                    string receiverAccountNumber = Console.ReadLine();
+                    int accountNumber;
 
-                    Console.Write("Please enter the recipient's name: ");
+                    if (!int.TryParse(receiverAccountNumber, out accountNumber))
+                    {
+                        Console.WriteLine("\nInvalid input.\nPlease enter a positive integer for the account number: ");
+                        goto Receiver;
+                    }
+
+                    if (int.TryParse(receiverAccountNumber, out accountNumber) && receiverAccountNumber.Length < 6)
+                    {
+                        Console.WriteLine("\nInvalid input.\nPlease enter a positive integer for the account number: ");
+                        goto Receiver;
+                    }
+
+
+
+                    Amount: Console.Write("Please enter the amount you wish to transfer: ");
+                    string transferAmount = Console.ReadLine();
+                    int Amount;
+
+                    if (!int.TryParse(transferAmount, out Amount) )
+                    {
+                        Console.Write("\nInvalid input.\nPlease enter a positive integer for the account number: ");
+                        goto Amount;
+                    }
+                    if (int.TryParse(transferAmount, out Amount) && Amount < 50)
+                    {
+                        Console.WriteLine("\nInvalid input.\nPlease enter a positive integer for the account number: ");
+                        goto Amount;
+                    }
+
+                    Desc:  Console.Write("Please enter the recipient's name: ");
                     string descriptions = Console.ReadLine();
+                    if (descriptions.Length < 5)
+                    {
+                        Console.WriteLine("\nInvalid input.\nInput length must be greater than 5 ");
+                        goto Desc;
+                    }
 
                     // Verify user has enough funds
-                    if (transferAmount > balance)
+                    if (Amount > balance)
                     {
-                        throw new Exception("Insufficient funds.");
+                        throw new Exception("\nInsufficient funds.");                        
                     }
 
                     // Perform the transfer
-                    balance -= transferAmount;
-                    receiverBalance += transferAmount;
+                    balance -= Amount;
+
 
                     // Display the updated balances
-                    Console.WriteLine("Transfer successful.");
-                    Console.WriteLine("Your new balance is ${1}.", balance);
+                    Console.WriteLine("\nTransfer successful.");
+                    Console.WriteLine("Your new balance is ${0}.", balance);
 
-                    string Account = receiverAccountNumber.ToString();
-                    string amount = transferAmount.ToString();
+                    string Account = receiverAccountNumber;
+                    string amount = transferAmount;
                     string description = descriptions;
                     DateTime dateTime = DateTime.Now;
 
@@ -235,47 +256,39 @@ namespace ATM.BLL
                         await transfer.Transfer(userTransfer);
                     }
                 }
-                catch (FormatException)
+               /* catch (FormatException)
                 {
-                    Console.WriteLine("Invalid input. Please enter a valid number.");
-                }
+                    Console.WriteLine("Invalid input.\nFormat exception");
+                }*/
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.ToString());
+                    Console.WriteLine(ex.StackTrace);
+                    Console.WriteLine(ex.TargetSite);
+                    Console.WriteLine(ex.Source);
                 }
 
-                // Ask user if they want to make another transfer
-                Console.Write("Do you want to make another transfer? (Y/N) ");
-                string response = Console.ReadLine().ToUpper();
 
-                if (response != "Y")
+            // Ask user if they want to make another transfer
+            Begin: Console.Write("Do you want to perform another transaction? (y/n): ");
+                string option = Console.ReadLine();
+
+                switch (option)
                 {
-                    break;
+                    case "y":
+                        break;
+
+                    case "n":
+                        Console.WriteLine("Thank you for staying with us");
+                        return;
+                    default:
+                        Console.WriteLine("Error");
+                        goto Begin;
                 }
             }
 
-            /*public string ReceiverAccount;
 
-       public string Amount;
-
-       public string Description;
-
-       public DateTime CreatedAt;*/
-
-
-
-
-            /*;
-            using (IOperations deposit = new OperationService(new AtmDbConnection()))
-            {
-                DepositViewModel userDeposit = new DepositViewModel
-                {
-                    Description = description,
-                    Amount = amount
-                };
-
-                await deposit.Deposit(userDeposit);
-            }*/
         }
 
     }

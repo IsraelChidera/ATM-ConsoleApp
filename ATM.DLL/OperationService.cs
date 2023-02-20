@@ -276,5 +276,6 @@ namespace ATM.DLL
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
     }
 }
