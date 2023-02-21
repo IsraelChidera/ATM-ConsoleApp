@@ -1,6 +1,7 @@
 ﻿using ATM.DLL.Interfaces;
 using ATM.DLL.Model;
 using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Data;
 using System.Threading.Tasks;
@@ -35,11 +36,11 @@ namespace ATM.DLL
                 try
                 {
                     await command.ExecuteNonQueryAsync();
-                    Console.WriteLine("Withdraw table is created successfully");
+                    //Console.WriteLine("Withdraw table is created successfully");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    //Console.WriteLine(ex.Message);
                 }
             }
 
@@ -77,7 +78,7 @@ namespace ATM.DLL
 
 
                     long withdrawId = (long)await command.ExecuteScalarAsync();
-                    Console.WriteLine($"You have succesfully added a withdraw data with Id:{(int)withdrawId} to the Db");
+                    //Console.WriteLine($"You have succesfully added a withdraw data with Id:{(int)withdrawId} to the Db");
                     return (int)withdrawId;
                 }
 
@@ -107,11 +108,11 @@ namespace ATM.DLL
                 try
                 {
                     await command.ExecuteNonQueryAsync();
-                    Console.WriteLine("Withdraw table is created successfully");
+                    //Console.WriteLine("Withdraw table is created successfully");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    //Console.WriteLine(ex.Message);
                 }
             }
 
@@ -149,7 +150,8 @@ namespace ATM.DLL
                     command.Parameters.Add(parameter);
 
                     long DepositId = (long)await command.ExecuteScalarAsync();
-                    Console.WriteLine($"You have succesfully added a Deposit data with Id:{(int)DepositId} to the Db");
+                    //Console.WriteLine($"You have succesfully added a Deposit data with Id:{(int)DepositId} to the Db");
+                    
                     return (int)DepositId;
                 };
             }
@@ -183,11 +185,11 @@ namespace ATM.DLL
                 try
                 {
                     await command.ExecuteNonQueryAsync();
-                    Console.WriteLine("Transfer table is created successfully");
+                    //Console.WriteLine("Transfer table is created successfully");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    //Console.WriteLine(ex.Message);
                 }
             }
 
@@ -242,7 +244,7 @@ namespace ATM.DLL
                     command.Parameters.Add(parameter);
 
                     long TransferId = (long)await command.ExecuteScalarAsync();
-                    Console.WriteLine($"You have succesfully added a Deposit data with Id:{(int)TransferId} to the Db");
+                    //Console.WriteLine($"You have succesfully added a Deposit data with Id:{(int)TransferId} to the Db");
                     return (int)TransferId;
                 };
             }

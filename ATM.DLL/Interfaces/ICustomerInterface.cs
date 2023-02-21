@@ -9,7 +9,7 @@ namespace ATM.DLL.Interfaces
     public interface ICustomerInterface : IDisposable
     {
         //Task CreateCustomerDb();        
-        Task CreateCustomerTable();
+        Task CreateCustomerTable(); 
         Task CreateDb();
         Task<int> CreateCustomer(CustomerViewModel customer);
     }

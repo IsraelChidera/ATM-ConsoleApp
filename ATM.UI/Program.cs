@@ -8,10 +8,9 @@ namespace ATM.UI
     {
         static async Task Main(string[] args)
         {
-            
-            Application application= new Application();
-            await application.Run();
 
+            Application application= new Application();
+            await application.Run();            
         }
     }
 }

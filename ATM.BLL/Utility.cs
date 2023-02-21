@@ -7,18 +7,18 @@ namespace ATM.BLL
 {    
     public static class Utility
     {
-        private static string _amount;
+        private static string? _amount;
 
-        public static string Amount
+        public static string? Amount
         {
             get; set;
         }
 
         public static void HomeContent()
         {
-            Console.WriteLine("*************************************************");
+            Console.WriteLine("============================================================");
             Console.WriteLine("\tAutomated Teller Machine");
-            Console.WriteLine("*************************************************");
+            Console.WriteLine("============================================================");
 
             Console.WriteLine();
             PressEnterToContinue();
@@ -27,7 +27,7 @@ namespace ATM.BLL
         public static void Animation(int timer = 15)
         {
             for (var i = 0; i < timer; i++)
-            {
+            {                
                 Console.Write(".");
                 Thread.Sleep(200);
             }
@@ -54,7 +54,16 @@ namespace ATM.BLL
 
         public static void SucessfullTransferPrompts(string message)
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine(message);
+            Console.ResetColor();
+        }
+
+        public static void ErrorPrompts(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"\n{message}\n");
+            Console.ResetColor();
         }
 
     }

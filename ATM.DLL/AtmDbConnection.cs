@@ -17,6 +17,11 @@ namespace ATM.DLL
 
         }
 
+        /*public AtmDbConnection() : this(@"Data Source=ISRAEL-CHIDERA\SQLEXPRESS01;Initial Catalog=TestDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False")
+        {
+
+        }*/
+
         public AtmDbConnection(string connectionString)
         {
             _connectionString = connectionString;
@@ -31,11 +36,11 @@ namespace ATM.DLL
 
         public async Task CloseConnection()
         {
-            if(_dbConnection?.State != ConnectionState.Closed)
+            if (_dbConnection?.State != ConnectionState.Closed)
             {
                 //await _dbConnection?.CloseAsync();
                 await _dbConnection.CloseAsync();
-            }            
+            }
         }
 
         protected virtual void Dispose(bool disposing)
@@ -49,7 +54,7 @@ namespace ATM.DLL
                 _dbConnection?.Dispose();
             }
 
-            _disposed = true;           
+            _disposed = true;
         }
 
         public void Dispose()
@@ -58,6 +63,6 @@ namespace ATM.DLL
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        
+
     }
 }

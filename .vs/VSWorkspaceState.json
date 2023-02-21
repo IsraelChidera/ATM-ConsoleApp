@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\ATM.BLL",
-    "\\ATM.DLL"
+    "\\ATM.DLL",
+    "\\ATM.UI"
   ],
-  "SelectedNode": "\\ATM.UI.sln",
+  "SelectedNode": "\\ATM.UI\\Program.cs",
   "PreviewInSolutionExplorer": false
 }

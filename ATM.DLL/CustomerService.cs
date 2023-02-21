@@ -26,8 +26,7 @@ namespace ATM.DLL
 
 
             string checkDatabaseExistenceQuery = $"SELECT * FROM sys.databases WHERE name='{_databaseName}'";
-
-            //string query = "CREATE DATABASE TestDb";
+            
             string query = $"IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = '{_databaseName}') " +
                 $"BEGIN " +
                 $"CREATE DATABASE {_databaseName}; " +
@@ -38,11 +37,11 @@ namespace ATM.DLL
                 try
                 {
                     await dbCommand.ExecuteNonQueryAsync();
-                    Console.WriteLine("Database is created sucessfully");
+                    //Console.WriteLine("Database is created sucessfully");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);                    
+                    //Console.WriteLine(ex.Message);                    
                 }
             }
 
@@ -68,11 +67,11 @@ namespace ATM.DLL
                 try
                 {
                     await createCommand.ExecuteNonQueryAsync();
-                    Console.WriteLine("Customer table is created successfully");
+                    //Console.WriteLine("Customer table is created successfully");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    //Console.WriteLine(ex.Message);
                 }
             }
 
@@ -121,16 +120,16 @@ namespace ATM.DLL
 
                     long customerId = (long)await command.ExecuteScalarAsync();
                     
-                    Console.WriteLine($"You have succesfully added a customer with Id:{(int)customerId} to the Db");
+                    //Console.WriteLine($"You have succesfully added a customer with Id:{(int)customerId} to the Db");
                     return (int)customerId;
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("failed operation");
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.ToString());
-                Console.WriteLine(ex.StackTrace);
+                //Console.WriteLine(ex.Message);
+                //Console.WriteLine(ex.ToString());
+                //Console.WriteLine(ex.StackTrace);
 
                 return 0;
             }

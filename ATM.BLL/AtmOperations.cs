@@ -16,35 +16,44 @@ namespace ATM.BLL
                 await withdraw.CreateWithdrawTable();
             }
 
-
-
+            Console.ForegroundColor= ConsoleColor.Yellow;
             Console.WriteLine("\n===========================================================");
             Console.WriteLine($"Your current balance is ${balance}");
             Console.WriteLine("===========================================================\n");
+            Console.ResetColor();
 
             while (true)
             {
+                Console.ForegroundColor= ConsoleColor.Yellow;
                 Console.WriteLine("Withdrawal must be more than $100");
-                Start: Console.Write("Enter amount to withdraw: ");
+                Console.ResetColor();
+
+            Start: Console.Write("Enter amount to withdraw: ");
                 string input = Console.ReadLine();
                 int withdrawAmount;
 
                 if (!int.TryParse(input, out withdrawAmount))
                 {
-                    Console.WriteLine("\nInvalid amount. Please try again.\n");
+                    Console.Clear();
+                    Utility.ErrorPrompts("Invalid amount. Please try again.");
+                    //Console.WriteLine("\nInvalid amount. Please try again.\n");
                     goto Start;
                 }
 
                 if (withdrawAmount > balance)
                 {
-                    Console.WriteLine("Insufficient funds.");
+                    Console.Clear();
+                    Utility.ErrorPrompts("Insufficient funds.");
+                    //Console.WriteLine("Insufficient funds.");
                     goto Start;
                 }
 
                 if (withdrawAmount > 99)
                 {
+                    Console.Clear();
                     balance -= withdrawAmount;
-                    Console.WriteLine($"\nSuccessfully withdrew ${withdrawAmount}.\nYour new balance is ${balance}.\n");
+                    
+                    //Console.WriteLine($"\nSuccessfully withdrew ${withdrawAmount}.\nYour new balance is ${balance}.\n");
 
                     //int amount = withdrawAmount;
 
@@ -58,13 +67,16 @@ namespace ATM.BLL
 
                         await withdraw.Withdraw(userWithdraw);
                     }
+                    Utility.SucessfullTransferPrompts($"\nSuccessfully withdrew ${withdrawAmount}.\nYour new balance is ${balance}.\n");
                 }
                 else
                 {
-                    Console.WriteLine("Amount must be greater than $100");
+                    Console.Clear();
+                    Utility.ErrorPrompts("Amount must be greater than $100");
+                    //Console.WriteLine("Amount must be greater than $100");
                     goto Start;
                 }
-
+                
             Begin: Console.Write("Do you want to perform another transaction? (y/n): ");
                 string option = Console.ReadLine();
 
@@ -75,7 +87,7 @@ namespace ATM.BLL
                         goto Start;
 
                     case "n":
-                        Console.WriteLine("Thank you for staying with us");
+                        Console.WriteLine("Thank you for banking with us");
                         return;
                     default:
                         Console.WriteLine("Error");
@@ -83,9 +95,6 @@ namespace ATM.BLL
                 }
 
             }
-
-            /*string name = "Edeh";
-            string accountNumber = "676376";*/
 
 
         }
@@ -96,27 +105,36 @@ namespace ATM.BLL
             {
                 await deposit.CreateDepositTable();
             }
-            Console.Clear();
-            Console.WriteLine("\n====================================================");
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\n================================================================");
             Console.WriteLine($"DEPOSIT");
-            Console.WriteLine("====================================================\n");
+            Console.WriteLine("=================================================================\n");
+            Console.ResetColor();
 
             while (true)
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Amount to be deposited must be more than $50");
+                Console.ResetColor();
+
             Start: Console.WriteLine("What amount do you want to deposit?");
                 string amount = Console.ReadLine();
 
                 int amt;
                 if (!int.TryParse(amount, out amt))
                 {
-                    Console.WriteLine("\nInvalid amount. Please try again.\n");
+                    Console.Clear();
+                    Utility.ErrorPrompts("Invalid amount. Please try again.");
+                    //Console.WriteLine("\nInvalid amount. Please try again.\n");
                     goto Start;
                 }
 
                 if (int.TryParse(amount, out amt) && amt < 50)
                 {
-                    Console.WriteLine("Error\nAmount to be deposited must be more than $50");
+                    Console.Clear();
+                    Utility.ErrorPrompts("Error\nAmount to be deposited must be more than $50");
+                    //Console.WriteLine("Error\nAmount to be deposited must be more than $50");
                     goto Start;
                 }
 
@@ -126,7 +144,9 @@ namespace ATM.BLL
 
                 if (description.Length < 5)
                 {
-                    Console.WriteLine("Description length must be longer than 5");
+                    Console.Clear();
+                    Utility.ErrorPrompts("Description length must be longer than 5");
+                    //Console.WriteLine("Description length must be longer than 5");
                     goto Description;
                 }
 
@@ -141,10 +161,13 @@ namespace ATM.BLL
                         };
 
                         await deposit.Deposit(userDeposit);
+                        Utility.SucessfullTransferPrompts($"You have deposited ${amount} successfully");
                     }
                 }
-
+                
+                Console.ForegroundColor = ConsoleColor.Yellow;
             Begin: Console.Write("Do you want to perform another transaction? (y/n): ");
+                Console.ResetColor();
                 string option = Console.ReadLine();
 
                 switch (option)
@@ -172,70 +195,84 @@ namespace ATM.BLL
             }
 
             Console.Clear();
+            Console.ForegroundColor= ConsoleColor.Yellow;
             Console.WriteLine("\n====================================================");
             Console.WriteLine($"TRANSFER");
             Console.WriteLine("====================================================\n");
-
+            Console.ResetColor();
 
             while (true)
             {
                 try
-                {                                                      
-                    Receiver: Console.WriteLine("\nPlease enter the recipient's account number ");
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                Receiver: Console.WriteLine("\nPlease enter the recipient's account number ");
                     Console.WriteLine("Account length must be greater than 5");
+                    Console.ResetColor();
 
                     string receiverAccountNumber = Console.ReadLine();
                     int accountNumber;
 
                     if (!int.TryParse(receiverAccountNumber, out accountNumber))
                     {
-                        Console.WriteLine("\nInvalid input.\nPlease enter a positive integer for the account number: ");
+                        Console.Clear();
+                        Utility.ErrorPrompts("Invalid input.\nPlease enter a positive integer for the account number: ");
+                        //Console.WriteLine("\nInvalid input.\nPlease enter a positive integer for the account number: ");
                         goto Receiver;
                     }
 
                     if (int.TryParse(receiverAccountNumber, out accountNumber) && receiverAccountNumber.Length < 6)
                     {
-                        Console.WriteLine("\nInvalid input.\nPlease enter a positive integer for the account number: ");
+                        Console.Clear();
+                        Utility.ErrorPrompts("Invalid input.\nPlease enter a positive integer for the account number: ");
+                        //Console.WriteLine("\nInvalid input.\nPlease enter a positive integer for the account number: ");
                         goto Receiver;
                     }
 
 
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                Amount: Console.Write("Please enter the amount you wish to transfer: ");
+                    Console.ResetColor();
 
-                    Amount: Console.Write("Please enter the amount you wish to transfer: ");
                     string transferAmount = Console.ReadLine();
                     int Amount;
 
-                    if (!int.TryParse(transferAmount, out Amount) )
+                    if (!int.TryParse(transferAmount, out Amount))
                     {
-                        Console.Write("\nInvalid input.\nPlease enter a positive integer for the account number: ");
+                        Console.Clear();
+                        Utility.ErrorPrompts("Invalid input.\nPlease enter a positive integer for the account number: ");
+                        //Console.Write("\nInvalid input.\nPlease enter a positive integer for the account number: ");
                         goto Amount;
                     }
                     if (int.TryParse(transferAmount, out Amount) && Amount < 50)
                     {
-                        Console.WriteLine("\nInvalid input.\nPlease enter a positive integer for the account number: ");
+                        Console.Clear();
+                        Utility.ErrorPrompts("Invalid input.\nPlease enter a positive integer for the account number: ");
+                        //Console.WriteLine("\nInvalid input.\nPlease enter a positive integer for the account number: ");
                         goto Amount;
                     }
 
-                    Desc:  Console.Write("Please enter the recipient's name: ");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                Desc: Console.Write("Please enter the recipient's name: ");
+                    Console.ResetColor();
                     string descriptions = Console.ReadLine();
                     if (descriptions.Length < 5)
                     {
-                        Console.WriteLine("\nInvalid input.\nInput length must be greater than 5 ");
+                        Console.Clear();
+                        Utility.ErrorPrompts("Invalid input.\nInput length must be greater than 5 ");
+                        //Console.WriteLine("\nInvalid input.\nInput length must be greater than 5 ");
                         goto Desc;
                     }
 
-                    // Verify user has enough funds
                     if (Amount > balance)
                     {
-                        throw new Exception("\nInsufficient funds.");                        
+                        throw new Exception("\nInsufficient funds.");
                     }
 
-                    // Perform the transfer
                     balance -= Amount;
 
-
-                    // Display the updated balances
-                    Console.WriteLine("\nTransfer successful.");
+                    Utility.SucessfullTransferPrompts("Transfer successful.");
+                    //Console.WriteLine("\nTransfer successful.");
                     Console.WriteLine("Your new balance is ${0}.", balance);
 
                     string Account = receiverAccountNumber;
@@ -256,10 +293,6 @@ namespace ATM.BLL
                         await transfer.Transfer(userTransfer);
                     }
                 }
-               /* catch (FormatException)
-                {
-                    Console.WriteLine("Invalid input.\nFormat exception");
-                }*/
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
@@ -270,7 +303,6 @@ namespace ATM.BLL
                 }
 
 
-            // Ask user if they want to make another transfer
             Begin: Console.Write("Do you want to perform another transaction? (y/n): ");
                 string option = Console.ReadLine();
 
@@ -280,7 +312,7 @@ namespace ATM.BLL
                         break;
 
                     case "n":
-                        Console.WriteLine("Thank you for staying with us");
+                        Console.WriteLine("Thank you for banking with us");
                         return;
                     default:
                         Console.WriteLine("Error");

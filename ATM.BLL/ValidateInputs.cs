@@ -13,9 +13,7 @@ namespace ATM.BLL
         private string _pinNumber;
         public async Task CreateDbAndTable()
         {
-            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-            //builder.cat
-            //builder.ToString()
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();            
             using (ICustomerInterface customerService = new CustomerService(new AtmDbConnection()))
             {
                 await customerService.CreateDb();
@@ -29,7 +27,7 @@ namespace ATM.BLL
             Console.WriteLine("\nEnter Card Number\nCard number must be 6 digits");
 
             _cardNumber = Console.ReadLine();
-            //public int 
+            
             while (true)
             {
                 try
@@ -37,18 +35,20 @@ namespace ATM.BLL
                     if (_cardNumber.Length == 6 && int.TryParse(_cardNumber, out int cardNum))
                     {
                         Utility.Animation();
-                        Console.WriteLine("\n**********************************************");
+                        Console.Clear();
+                        Console.WriteLine("\n===============================================");
                         Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("Congrats... Valid card number");
+                        Console.WriteLine("This is a valid card number");
                         Console.WriteLine($"Card number: {cardNum}");
                         Console.ResetColor();
-                        Console.WriteLine("**********************************************\n");
+                        Console.WriteLine("===============================================\n");
 
                         break;
                     }
                     else
                     {
                         Utility.Animation();
+                        Console.Clear();
                         Console.WriteLine();
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("\nInvalid input. Please try again");
@@ -77,11 +77,14 @@ namespace ATM.BLL
                     if (_pinNumber.Length == 4 && int.TryParse(_pinNumber, out int pinNum))
                     {
                         Utility.Animation();
+                        Console.Clear();
                         Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("**********************************************");
+                        Console.WriteLine("\n===============================================");
+                        Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine($"PIN: {pinNum}");
-                        Console.WriteLine("Congrats... You can now do your transactions");
-                        Console.WriteLine("**********************************************");
+                        Utility.SucessfullTransferPrompts("Congrats... You can now do your transactions");                        
+                        Console.ResetColor();
+                        Console.WriteLine("===============================================\n");
                         Console.ResetColor();
                         break;
                     }
@@ -122,7 +125,7 @@ namespace ATM.BLL
         }
 
 
-        //Run this part
+        
         public async Task ValidateCustomerInputs()
         {
             await CreateDbAndTable();
