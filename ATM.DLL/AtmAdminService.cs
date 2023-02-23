@@ -107,10 +107,12 @@ namespace ATM.DLL
                         });
                     }
                 }
-
+                Console.WriteLine("---------------------------------------------------------------------------------------------------");
+                Console.WriteLine($"\tBalance\t\t\t\t|\t\t\t\tAmount");
+                Console.WriteLine("---------------------------------------------------------------------------------------------------");
                 foreach (var list in transferList)
                 {
-                    Console.WriteLine($"Balance: {list.Balance} -- Amount: {list.Amount}");
+                    Console.WriteLine($"\t{list.Balance}\t\t\t\t|\t\t\t\t{list.Amount}");                    
                 }
 
                 return transferList;
