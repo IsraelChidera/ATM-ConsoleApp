@@ -5,6 +5,6 @@
     "\\ATM.DLL",
     "\\ATM.UI"
   ],
-  "SelectedNode": "\\ATM.UI\\Program.cs",
+  "SelectedNode": "\\ATM.BLL\\bin",
   "PreviewInSolutionExplorer": false
 }

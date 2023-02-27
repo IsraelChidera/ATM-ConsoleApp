@@ -16,12 +16,14 @@ namespace ATM.BLL
 
         public static void HomeContent()
         {
-            Console.WriteLine("============================================================");
-            Console.WriteLine("\tAutomated Teller Machine");
-            Console.WriteLine("============================================================");
+            Console.WriteLine("========================================================================================");
+            Console.WriteLine("\tWelcome to my ATM App");
+            Console.WriteLine("========================================================================================");
 
-            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\nPlease enter your card. . .\nNote - We collect your card number and pin in place of your ATM card\n\n");
             PressEnterToContinue();
+            Console.ResetColor();
         }
 
         public static void Animation(int timer = 15)

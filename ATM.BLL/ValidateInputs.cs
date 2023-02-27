@@ -24,7 +24,7 @@ namespace ATM.BLL
 
         public async Task ValidateCardDetails()
         {
-            Console.WriteLine("\nEnter Card Number\nCard number must be 6 digits");
+            Console.WriteLine("\nEnter Card Number\nCard number must be 8 digits");
 
             _cardNumber = Console.ReadLine();
             
@@ -32,7 +32,7 @@ namespace ATM.BLL
             {
                 try
                 {
-                    if (_cardNumber.Length == 6 && int.TryParse(_cardNumber, out int cardNum))
+                    if (_cardNumber.Length == 8 && int.TryParse(_cardNumber, out int cardNum))
                     {
                         Utility.Animation();
                         Console.Clear();
@@ -47,13 +47,14 @@ namespace ATM.BLL
                     }
                     else
                     {
-                        Utility.Animation();
-                        Console.Clear();
+                        Utility.Animation();                        
                         Console.WriteLine();
+                        Console.Clear();
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("\nInvalid input. Please try again");
-                        _cardNumber = Console.ReadLine();
+                        Console.WriteLine("\nInvalid input. Please try again");                       
                         Console.ResetColor();
+                        Console.WriteLine("\nEnter Card Number\nCard number must be 8 digits");
+                        _cardNumber = Console.ReadLine();
                     }
                 }
                 catch (Exception exception)
@@ -106,8 +107,6 @@ namespace ATM.BLL
 
 
 
-            Console.WriteLine(_pinNumber);
-            Console.WriteLine(_cardNumber);
             DateTime dateTime= DateTime.Now;
 
             using (ICustomerInterface insertInputs = new CustomerService(new AtmDbConnection()))

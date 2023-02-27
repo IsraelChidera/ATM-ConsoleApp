@@ -8,7 +8,7 @@ namespace ATM.DLL.Interfaces
     {
         Task<int> Deposit(DepositViewModel depositView);
 
-        Task<int> Withdraw(WithdrawViewModel withdraw);
+        Task<int> Withdraw(WithdrawViewModel withdraw); 
 
         Task<int> Transfer(TransferViewModel transfer);
 

@@ -13,7 +13,7 @@ namespace ATM.DLL
         private bool _disposed;
         private string _databaseName = "TestDb";
 
-        public AtmAdminService(AtmDbConnection dbContext) 
+        public AtmAdminService(AtmDbConnection dbContext)  
         {
             _dbContext = dbContext;
         }             
