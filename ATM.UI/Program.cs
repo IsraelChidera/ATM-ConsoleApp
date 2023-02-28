@@ -10,23 +10,19 @@ namespace ATM.UI
         {
 
             Application application = new Application();
-             await application.Run();
+            await application.Run();
 
-            /*Console.WriteLine("Trying out views");
+           /* Console.WriteLine("Trying out views");
             try
             {
                 Console.Clear();
                 Console.WriteLine("============================================================");
                 Console.WriteLine("\tAll Transfer Transactions");
                 Console.WriteLine("============================================================");
-                using (ITransaction admin = new TransactionService(new AtmDbConnection()) )
+                using (ITransaction admin = new TransactionService(new AtmDbConnection()))
                 {
                     await admin.TransactionsView();
-                };
-                *//*using (IAdminInterface admin = new AtmAdminService(new AtmDbConnection()))
-                {
-                    await admin.TransferTransactions();
-                };*//*
+                };                
             }
             catch (Exception ex)
             {

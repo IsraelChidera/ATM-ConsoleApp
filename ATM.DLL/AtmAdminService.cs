@@ -11,7 +11,7 @@ namespace ATM.DLL
     {
         private readonly AtmDbConnection _dbContext;
         private bool _disposed;
-        private string _databaseName = "TestDb";
+        private string _databaseName = "ATMDB";
 
         public AtmAdminService(AtmDbConnection dbContext)  
         {
@@ -22,7 +22,7 @@ namespace ATM.DLL
         {
             var connection = await _dbContext.OpenConnection();            
 
-            string query = $"Use {_databaseName}; SELECT Deposit.Amount, Deposit.Description " +
+            string query = $"Use {_databaseName}; SELECT Deposit.AmountDeposited, Deposit.DepositDescription " +
                     $"FROM Deposit";
             /*string query = "select * from Deposit Where";*/
 
@@ -36,15 +36,15 @@ namespace ATM.DLL
                         transferList.Add(
                             new DepositViewModel()
                             {
-                                Amount = reader["Amount"].ToString(),
-                                Description = reader["Description"].ToString(),
+                                AmountDeposited = reader["AmountDeposited"].ToString(),
+                                DepositDescription = reader["DepositDescription"].ToString(),
                             });
                     }
                 };
 
                 foreach (var list in transferList)
                 {
-                    Console.WriteLine($"Amount: {list.Amount} --- Description: {list.Description}");
+                    Console.WriteLine($"Amount: {list.AmountDeposited} --- Description: {list.DepositDescription}");
                 }
 
                 return transferList;
@@ -55,7 +55,7 @@ namespace ATM.DLL
         public async Task<IEnumerable<TransferViewModel>> TransferTransactions()
         {
             var connection = await _dbContext.OpenConnection();
-            string query = $"Use {_databaseName}; SELECT Transfer.ReceiverAccount, Transfer.Amount, Transfer.Description, Transfer.CreatedAt " +
+            string query = $"Use {_databaseName}; SELECT Transfer.ReceiverAccount, Transfer.AmountTransferred, Transfer.TransferDescription, Transfer.CreatedAt " +
                 $"FROM Transfer";
 
             using (SqlCommand command = new SqlCommand(query, connection))
@@ -68,8 +68,8 @@ namespace ATM.DLL
                         transferList.Add(new TransferViewModel()
                         {
                             ReceiverAccount = reader["ReceiverAccount"].ToString(),
-                            Amount = reader["Amount"].ToString(),
-                            Description = reader["Description"].ToString(),
+                            AmountTransferred = reader["AmountTransferred"].ToString(),
+                            TransferDescription = reader["TransferDescription"].ToString(),
                             CreatedAt = DateTime.Parse(reader["CreatedAt"].ToString()),
                         });
                     }
@@ -77,8 +77,8 @@ namespace ATM.DLL
 
                 foreach (var list in transferList)
                 {
-                    Console.WriteLine($"Receiver Account: {list.ReceiverAccount}, Amount: {list.Amount}, " +
-                        $"Description: {list.Description}, Transfer At: {list.CreatedAt}");
+                    Console.WriteLine($"Receiver Account: {list.ReceiverAccount}, Amount: {list.AmountTransferred}, " +
+                        $"Description: {list.TransferDescription}, Transfer At: {list.CreatedAt}");
                 }
 
                 return transferList;
@@ -90,7 +90,7 @@ namespace ATM.DLL
         public async Task<IEnumerable<WithdrawViewModel>> WithdrawTransactions()
         {
             var connection = await _dbContext.OpenConnection();
-            string query = $"Use {_databaseName}; SELECT Withdraw.Balance, Withdraw.Amount " +
+            string query = $"Use {_databaseName}; SELECT Withdraw.Balance, Withdraw.AmountWithdrawn " +
                $"FROM Withdraw";
 
             using (SqlCommand command = new SqlCommand(query, connection))
@@ -103,7 +103,7 @@ namespace ATM.DLL
                         transferList.Add(new WithdrawViewModel()
                         {
                             Balance = int.Parse(reader["Balance"].ToString()),
-                            Amount = int.Parse(reader["Amount"].ToString())
+                            AmountWithdrawn = int.Parse(reader["AmountWithdrawn"].ToString())
                         });
                     }
                 }
@@ -112,7 +112,7 @@ namespace ATM.DLL
                 Console.WriteLine("---------------------------------------------------------------------------------------------------");
                 foreach (var list in transferList)
                 {
-                    Console.WriteLine($"\t{list.Balance}\t\t\t\t|\t\t\t\t{list.Amount}");                    
+                    Console.WriteLine($"\t{list.Balance}\t\t\t\t|\t\t\t\t{list.AmountWithdrawn}");                    
                 }
 
                 return transferList;

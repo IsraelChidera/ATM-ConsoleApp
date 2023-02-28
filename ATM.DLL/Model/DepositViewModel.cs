@@ -6,8 +6,8 @@ namespace ATM.DLL.Model
 {
     public class DepositViewModel
     {                   
-        public string Amount { get; set; }
-        public string Description { get; set; }
+        public string AmountDeposited { get; set; }
+        public string DepositDescription { get; set; }
 
     }
 }

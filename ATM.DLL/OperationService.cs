@@ -12,7 +12,7 @@ namespace ATM.DLL
     {
         private readonly AtmDbConnection _dbContext;
         private bool _disposed;
-        private string _databaseName = "TestDb";
+        private string _databaseName = "ATMDB";
 
         public OperationService(AtmDbConnection dbContext)
         {
@@ -26,10 +26,10 @@ namespace ATM.DLL
 
             string tableName = "Withdraw";
             string query = $"Use {_databaseName}; CREATE TABLE {tableName} " +
-                $"(WithdrawId int Primary Key Identity(1,1), " +              
-                $"Balance int, " +
-                $"Amount int " +
-                ");";
+                $"(WithdrawID int Primary Key Identity(1,1),  " +
+                $"Balance INT, " +
+                $"AmountWithdrawn INT, " +
+                $"FOREIGN KEY (WithdrawID) REFERENCES Customers(CustomerID));";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -51,8 +51,9 @@ namespace ATM.DLL
             try
             {
                 var connection = await _dbContext.OpenConnection();
-                string query = $"Use {_databaseName}; INSERT INTO Withdraw (Balance, Amount) " +
-                    "VALUES( @Balance, @Amount) SELECT CAST(SCOPE_IDENTITY() AS BIGINT)";
+                string query = $"Use {_databaseName}; INSERT INTO Withdraw (Balance, AmountWithdrawn) " +
+                    "VALUES( @Balance, @AmountWithdrawn) " +
+                    "SELECT CAST(SCOPE_IDENTITY() AS BIGINT)";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -69,8 +70,8 @@ namespace ATM.DLL
 
                     parameter = new SqlParameter()
                     {
-                        ParameterName = "Amount",
-                        Value = withdraw.Amount,
+                        ParameterName = "AmountWithdrawn",
+                        Value = withdraw.AmountWithdrawn,
                         SqlDbType = SqlDbType.Int,
                         Direction = ParameterDirection.Input,
                     };
@@ -97,11 +98,12 @@ namespace ATM.DLL
             var connection = await _dbContext.OpenConnection();
 
             string tableName = "Deposit";
-            string query = $"Use {_databaseName}; CREATE TABLE {tableName} " +
-                $"(WithdrawId int Primary Key Identity(1,1), " +                             
-                $"Amount varchar(50), " +
-                $"Description varchar(50) " +
-                ");";
+            string query = $"Use {_databaseName}; " +
+                $"CREATE TABLE {tableName}" +
+                $"(DepositID int Primary Key Identity(1,1), " +
+                $"AmountDeposited varchar(50), " +
+                $"DepositDescription varchar(50), " +
+                $"FOREIGN KEY (DepositID) REFERENCES Customers(CustomerID));";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -125,16 +127,17 @@ namespace ATM.DLL
                 var connection = await _dbContext.OpenConnection();
 
 
-                string query = $"Use {_databaseName}; INSERT INTO Deposit ( Amount, Description ) " +
-                        "VALUES(@Amount, @Description) " +
+                string query = $"Use {_databaseName}; " +
+                    $"INSERT INTO Deposit ( AmountDeposited, DepositDescription ) " +
+                        "VALUES(@AmountDeposited, @DepositDescription) " +
                         "SELECT CAST(SCOPE_IDENTITY() AS BIGINT)";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {                                     
                     SqlParameter parameter = new SqlParameter
                     {
-                        ParameterName = "Amount",
-                        Value = depositView.Amount,
+                        ParameterName = "AmountDeposited",
+                        Value = depositView.AmountDeposited,
                         SqlDbType = SqlDbType.VarChar,
                         Direction = ParameterDirection.Input
                     };
@@ -142,8 +145,8 @@ namespace ATM.DLL
 
                     parameter = new SqlParameter
                     {
-                        ParameterName = "Description",
-                        Value = depositView.Description,
+                        ParameterName = "DepositDescription",
+                        Value = depositView.DepositDescription,
                         SqlDbType = SqlDbType.VarChar,
                         Direction = ParameterDirection.Input
                     };
@@ -172,13 +175,14 @@ namespace ATM.DLL
             var connection = await _dbContext.OpenConnection();
 
             string tableName = "Transfer";
-            string query = $"Use {_databaseName}; CREATE TABLE {tableName} " +
+            string query = $"Use {_databaseName}; " +
+                $"CREATE TABLE {tableName}" +
                 $"(TransferID int Primary Key Identity(1,1), " +
                 $"ReceiverAccount varchar(50), " +
-                $"Amount varchar(50), " +
-                $"Description varchar(50), " +
-                $"CreatedAt varchar(50) " +
-                ");";
+                $"AmountTransferred varchar(50), " +
+                $"TransferDescription varchar(50), " +
+                $"CreatedAt varchar(50), " +
+                $"FOREIGN KEY (TransferID) REFERENCES Customers(CustomerID));";
 
             using (SqlCommand command = new SqlCommand(query, connection))
             {
@@ -201,8 +205,8 @@ namespace ATM.DLL
                 var connection = await _dbContext.OpenConnection();
 
 
-                string query = $"Use {_databaseName}; INSERT INTO Transfer ( ReceiverAccount, Amount, Description, CreatedAt ) " +
-                        "VALUES(@Account, @Amount, @Description, @CreatedAt) " +
+                string query = $"Use {_databaseName}; INSERT INTO Transfer ( ReceiverAccount, AmountTransferred, TransferDescription, CreatedAt ) " +
+                        "VALUES(@Account, @AmountTransferred, @TransferDescription, @CreatedAt) " +
                         "SELECT CAST(SCOPE_IDENTITY() AS BIGINT)";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -218,8 +222,8 @@ namespace ATM.DLL
 
                     parameter = new SqlParameter
                     {
-                        ParameterName = "Amount",
-                        Value = transfer.Amount,
+                        ParameterName = "AmountTransferred",
+                        Value = transfer.AmountTransferred,
                         SqlDbType = SqlDbType.VarChar,
                         Direction = ParameterDirection.Input
                     };
@@ -227,8 +231,8 @@ namespace ATM.DLL
 
                     parameter = new SqlParameter
                     {
-                        ParameterName = "Description",
-                        Value = transfer.Description,
+                        ParameterName = "TransferDescription",
+                        Value = transfer.TransferDescription,
                         SqlDbType = SqlDbType.VarChar,
                         Direction = ParameterDirection.Input
                     };

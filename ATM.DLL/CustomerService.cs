@@ -12,7 +12,7 @@ namespace ATM.DLL
     {
         private readonly AtmDbConnection _dbContext;
         private bool _disposed;
-        private string _databaseName = "TestDb";
+        private string _databaseName = "ATMDB";
 
         public CustomerService(AtmDbConnection dbContext)
         {
@@ -41,7 +41,7 @@ namespace ATM.DLL
                 }
                 catch (Exception ex)
                 {
-                    //Console.WriteLine(ex.Message);                    
+                    Console.WriteLine(ex.Message);                    
                 }
             }
 
@@ -55,12 +55,12 @@ namespace ATM.DLL
             
             string tableName = "Customers";            
 
-            string query = $"Use {_databaseName}; CREATE TABLE {tableName} " +
+            string query = $"Use {_databaseName}; " +
+                $"CREATE TABLE {tableName} " +
                 $"(CustomerID int Primary Key Identity(1,1), " +
-                $"CardNumber varchar(50), " +
-                $"Pin varchar(50), " +
-                $"LogTime varchar(50)"+
-                ");";
+                $"CardNumber varchar(50) NOT NULL, " +
+                $"Pin varchar(50) NOT NULL, " +
+                $"LogTime varchar(50)); ";
 
             using (SqlCommand createCommand = new SqlCommand(query, connection))
             {
@@ -71,7 +71,7 @@ namespace ATM.DLL
                 }
                 catch (Exception ex)
                 {
-                    //Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.Message);
                 }
             }
 

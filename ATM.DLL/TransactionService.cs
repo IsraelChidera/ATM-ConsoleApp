@@ -12,7 +12,7 @@ namespace ATM.DLL
     {
         private readonly AtmDbConnection _dbContext;
         private bool _disposed;
-        private string _databaseName = "TestDb";        
+        private string _databaseName = "ATMDB";        
 
         public TransactionService(AtmDbConnection dbContext)
         {

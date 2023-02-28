@@ -8,9 +8,9 @@ namespace ATM.DLL.Model
     {
         public string ReceiverAccount;
 
-        public string Amount;
+        public string AmountTransferred;
 
-        public string Description;
+        public string TransferDescription;
 
         public DateTime CreatedAt;
     } 

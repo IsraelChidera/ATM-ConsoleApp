@@ -11,10 +11,7 @@ namespace ATM.BLL
         private int balance = 100000;
         public async Task RunWithdraw()
         {
-            using (IOperations withdraw = new OperationService(new AtmDbConnection()))
-            {
-                await withdraw.CreateWithdrawTable();
-            }
+            
 
             Console.ForegroundColor= ConsoleColor.Yellow;
             Console.WriteLine("\n===========================================================");
@@ -24,6 +21,11 @@ namespace ATM.BLL
 
             while (true)
             {
+                /*using (IOperations withdraw = new OperationService(new AtmDbConnection()))
+                {
+                    await withdraw.CreateWithdrawTable();
+                }*/
+
                 Console.ForegroundColor= ConsoleColor.Yellow;
                 Console.WriteLine("Withdrawal must be more than $100");
                 Console.ResetColor();
@@ -59,10 +61,11 @@ namespace ATM.BLL
 
                     using (IOperations withdraw = new OperationService(new AtmDbConnection()))
                     {
+                        await withdraw.CreateWithdrawTable();
                         WithdrawViewModel userWithdraw = new WithdrawViewModel
                         {
                             Balance = balance,
-                            Amount = withdrawAmount,
+                            AmountWithdrawn = withdrawAmount,
                         };
 
                         await withdraw.Withdraw(userWithdraw);
@@ -101,10 +104,10 @@ namespace ATM.BLL
 
         public async Task RunDeposit()
         {
-            using (IOperations deposit = new OperationService(new AtmDbConnection()))
+            /*using (IOperations deposit = new OperationService(new AtmDbConnection()))
             {
                 await deposit.CreateDepositTable();
-            }
+            }*/
 
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("\n================================================================");
@@ -150,14 +153,15 @@ namespace ATM.BLL
                     goto Description;
                 }
 
-                else
+                if(description.Length > 5)
                 {
                     using (IOperations deposit = new OperationService(new AtmDbConnection()))
                     {
+                        await deposit.CreateDepositTable();
                         DepositViewModel userDeposit = new DepositViewModel
                         {
-                            Description = description,
-                            Amount = amount
+                            DepositDescription = description,
+                            AmountDeposited = amount
                         };
 
                         await deposit.Deposit(userDeposit);
@@ -189,10 +193,10 @@ namespace ATM.BLL
 
         public async Task RunTransfer()
         {
-            using (IOperations transfer = new OperationService(new AtmDbConnection()))
+            /*using (IOperations transfer = new OperationService(new AtmDbConnection()))
             {
                 await transfer.CreateTransferTable();
-            }
+            }*/
 
             Console.Clear();
             Console.ForegroundColor= ConsoleColor.Yellow;
@@ -282,11 +286,12 @@ namespace ATM.BLL
 
                     using (IOperations transfer = new OperationService(new AtmDbConnection()))
                     {
+                        await transfer.CreateTransferTable();
                         TransferViewModel userTransfer = new TransferViewModel
                         {
                             ReceiverAccount = Account,
-                            Amount = amount,
-                            Description = description,
+                            AmountTransferred = amount,
+                            TransferDescription = description,
                             CreatedAt = dateTime
                         };
 
