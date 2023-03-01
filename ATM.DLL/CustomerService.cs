@@ -41,7 +41,7 @@ namespace ATM.DLL
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);                    
+                    //Console.WriteLine(ex.Message);                    
                 }
             }
 
@@ -71,7 +71,7 @@ namespace ATM.DLL
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    //Console.WriteLine(ex.Message);
                 }
             }
 
