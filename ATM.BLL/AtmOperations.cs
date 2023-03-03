@@ -8,14 +8,15 @@ namespace ATM.BLL
 {
     public class AtmOperations
     {
-        private int balance = 100000;
+        private int _balance = 100000;
+        public int _amt;
         public async Task RunWithdraw()
         {
             
 
             Console.ForegroundColor= ConsoleColor.Yellow;
             Console.WriteLine("\n===========================================================");
-            Console.WriteLine($"Your current balance is ${balance}");
+            Console.WriteLine($"Your current balance is ${_balance - _amt}");
             Console.WriteLine("===========================================================\n");
             Console.ResetColor();
 
@@ -42,7 +43,7 @@ namespace ATM.BLL
                     goto Start;
                 }
 
-                if (withdrawAmount > balance)
+                if (withdrawAmount > _balance)
                 {
                     Console.Clear();
                     Utility.ErrorPrompts("Insufficient funds.");
@@ -53,7 +54,7 @@ namespace ATM.BLL
                 if (withdrawAmount > 99)
                 {
                     Console.Clear();
-                    balance -= withdrawAmount;
+                    _balance -= withdrawAmount;
                     
                     //Console.WriteLine($"\nSuccessfully withdrew ${withdrawAmount}.\nYour new balance is ${balance}.\n");
 
@@ -64,13 +65,13 @@ namespace ATM.BLL
                         await withdraw.CreateWithdrawTable();
                         WithdrawViewModel userWithdraw = new WithdrawViewModel
                         {
-                            Balance = balance,
+                            Balance = _balance,
                             AmountWithdrawn = withdrawAmount,
                         };
 
                         await withdraw.Withdraw(userWithdraw);
                     }
-                    Utility.SucessfullTransferPrompts($"\nSuccessfully withdrew ${withdrawAmount}.\nYour new balance is ${balance}.\n");
+                    Utility.SucessfullTransferPrompts($"\nSuccessfully withdrew ${withdrawAmount}.\nYour new balance is ${_balance}.\n");
                 }
                 else
                 {
@@ -121,11 +122,12 @@ namespace ATM.BLL
                 Console.WriteLine("Amount to be deposited must be more than $50");
                 Console.ResetColor();
 
-            Start: Console.WriteLine("What amount do you want to deposit?");
+            Start: Console.WriteLine("How much do you want to deposit?");
+                Console.Write("$ ");
                 string amount = Console.ReadLine();
 
-                int amt;
-                if (!int.TryParse(amount, out amt))
+                
+                if (!int.TryParse(amount, out _amt) || _amt < 50)
                 {
                     Console.Clear();
                     Utility.ErrorPrompts("Invalid amount. Please try again.");
@@ -133,21 +135,28 @@ namespace ATM.BLL
                     goto Start;
                 }
 
-                if (int.TryParse(amount, out amt) && amt < 50)
+              /*  if (int.TryParse(amount, out amt) && amt < 50)
                 {
                     Console.Clear();
                     Utility.ErrorPrompts("Error\nAmount to be deposited must be more than $50");
                     //Console.WriteLine("Error\nAmount to be deposited must be more than $50");
                     goto Start;
-                }
+                }*/
 
 
             Description: Console.WriteLine("\nWrite a short description here ...");
                 string description = Console.ReadLine();
 
-               
 
-                if(description.Length > 5)
+                if (description.Length < 5)
+                {
+                    Console.Clear();
+                    Utility.ErrorPrompts("Description length must be longer than 5");
+                    //Console.WriteLine("Description length must be longer than 5");
+                    goto Description;
+                }
+
+                if (description.Length > 5 && int.TryParse(amount, out _amt))
                 {
                     using (IOperations deposit = new OperationService(new AtmDbConnection()))
                     {
@@ -159,19 +168,14 @@ namespace ATM.BLL
                         };
 
                         await deposit.Deposit(userDeposit);
-                        Utility.SucessfullTransferPrompts($"You have deposited ${amount} successfully");
+                        Utility.SucessfullTransferPrompts($"You have deposited ${amount} successfully\n\n");
                     }
                 }
-                if (description.Length < 5)
-                {
-                    Console.Clear();
-                    Utility.ErrorPrompts("Description length must be longer than 5");
-                    //Console.WriteLine("Description length must be longer than 5");
-                    goto Description;
-                }
+                
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
-            Begin: Console.Write("Do you want to perform another transaction? (y/n): ");
+            Begin: Console.WriteLine("===================================================================");
+                Console.Write("Do you want to perform another transaction? (y/n): ");
                 Console.ResetColor();
                 string option = Console.ReadLine();
 
@@ -270,16 +274,16 @@ namespace ATM.BLL
                         goto Desc;
                     }
 
-                    if (Amount > balance)
+                    if (Amount > _balance)
                     {
                         throw new Exception("\nInsufficient funds.");
                     }
 
-                    balance -= Amount;
+                    _balance -= Amount;
 
                     Utility.SucessfullTransferPrompts("Transfer successful.");
                     //Console.WriteLine("\nTransfer successful.");
-                    Console.WriteLine("Your new balance is ${0}.", balance);
+                    Console.WriteLine("Your new balance is ${0}.", _balance);
 
                     string Account = receiverAccountNumber;
                     string amount = transferAmount;
@@ -328,6 +332,18 @@ namespace ATM.BLL
             }
 
 
+        }
+
+        public void RunBalance()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\n====================================================");
+            Console.Write("Amount in bank: $");
+            Console.WriteLine(_balance - _amt);
+            Console.WriteLine("====================================================\n");
+            Console.ResetColor();
+            
         }
 
     }

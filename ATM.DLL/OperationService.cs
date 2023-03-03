@@ -153,7 +153,7 @@ namespace ATM.DLL
                     command.Parameters.Add(parameter);
 
                     long DepositId = (long)await command.ExecuteScalarAsync();
-                    Console.WriteLine($"You have succesfully added a Deposit data with Id:{(int)DepositId} to the Db");
+                    //Console.WriteLine($"You have succesfully added a Deposit data with Id:{(int)DepositId} to the Db");
 
                     return (int)DepositId;
                 };

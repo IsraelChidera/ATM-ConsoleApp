@@ -70,7 +70,7 @@ namespace ATM.UI
             while (check)
             {
             start: Console.WriteLine("\nHi! there\nWhat do you want to do?\nPress 1: Deposit\nPress 2: Withdraw " +
-                "\nPress 3: Transfer\nPress 0: Exit");
+                "\nPress 3: Transfer\nPress 4: Balance\nPress 0: Exit");
 
                 string option = Console.ReadLine();
                 if (true)
@@ -102,6 +102,10 @@ namespace ATM.UI
                             goto start;
                         //check = false;
                         //break;
+                        case "4":
+                            Console.Clear();
+                            operations.RunBalance();
+                            goto start;
                         case "0":
                             Console.Clear();
                             Console.WriteLine("Exiting . . .");
