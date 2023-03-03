@@ -1,7 +1,6 @@
 ﻿using ATM.DLL.Interfaces;
 using ATM.DLL.Model;
 using Microsoft.Data.SqlClient;
-using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Data;
 using System.Threading.Tasks;
@@ -12,7 +11,7 @@ namespace ATM.DLL
     {
         private readonly AtmDbConnection _dbContext;
         private bool _disposed;
-        private string _databaseName = "ATMDB";
+        private string _databaseName = "ADOATMDATABASE";
 
         public OperationService(AtmDbConnection dbContext)
         {
@@ -132,8 +131,9 @@ namespace ATM.DLL
                         "VALUES(@AmountDeposited, @DepositDescription) " +
                         "SELECT CAST(SCOPE_IDENTITY() AS BIGINT)";
 
+
                 using (SqlCommand command = new SqlCommand(query, connection))
-                {                                     
+                {
                     SqlParameter parameter = new SqlParameter
                     {
                         ParameterName = "AmountDeposited",
@@ -153,8 +153,8 @@ namespace ATM.DLL
                     command.Parameters.Add(parameter);
 
                     long DepositId = (long)await command.ExecuteScalarAsync();
-                    //Console.WriteLine($"You have succesfully added a Deposit data with Id:{(int)DepositId} to the Db");
-                    
+                    Console.WriteLine($"You have succesfully added a Deposit data with Id:{(int)DepositId} to the Db");
+
                     return (int)DepositId;
                 };
             }
@@ -167,7 +167,7 @@ namespace ATM.DLL
                 return 0;
             }
 
-        }        
+        }
 
         //Transfer Operations
         public async Task CreateTransferTable()

@@ -145,13 +145,7 @@ namespace ATM.BLL
             Description: Console.WriteLine("\nWrite a short description here ...");
                 string description = Console.ReadLine();
 
-                if (description.Length < 5)
-                {
-                    Console.Clear();
-                    Utility.ErrorPrompts("Description length must be longer than 5");
-                    //Console.WriteLine("Description length must be longer than 5");
-                    goto Description;
-                }
+               
 
                 if(description.Length > 5)
                 {
@@ -168,7 +162,14 @@ namespace ATM.BLL
                         Utility.SucessfullTransferPrompts($"You have deposited ${amount} successfully");
                     }
                 }
-                
+                if (description.Length < 5)
+                {
+                    Console.Clear();
+                    Utility.ErrorPrompts("Description length must be longer than 5");
+                    //Console.WriteLine("Description length must be longer than 5");
+                    goto Description;
+                }
+
                 Console.ForegroundColor = ConsoleColor.Yellow;
             Begin: Console.Write("Do you want to perform another transaction? (y/n): ");
                 Console.ResetColor();
@@ -181,6 +182,7 @@ namespace ATM.BLL
                         goto Start;
 
                     case "n":
+                        Console.Clear();
                         Console.WriteLine("Thank you for staying with us");
                         return;
                     default:

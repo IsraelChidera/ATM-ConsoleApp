@@ -192,11 +192,13 @@ namespace ATM.UI
                             
                             await adminOperations.GetWithdrawTransactions();
                             //goto Start;
-                        check = false;
-                        break;
-                        case "0":
-                            Console.WriteLine("Exit application");
                             check = false;
+                            break;
+                        case "0":
+                            Console.Clear();
+                            Console.WriteLine("Exit application");
+                            check = true;
+                            await Run();                            
                             break;
                         default:
                             Console.WriteLine("Incorrect Inputs... Try again!");

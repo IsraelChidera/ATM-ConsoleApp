@@ -1,5 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Protocols;
 using System;
+using System.Configuration;
 using System.Data;
 using System.Threading.Tasks;
 
@@ -10,9 +12,11 @@ namespace ATM.DLL
         private bool _disposed;
         private readonly string _connectionString;
         private SqlConnection _dbConnection = null;
+             
+
 
         //Initial Catalog = AtmDBApp;
-        public AtmDbConnection() : this(@"Data Source=ISRAEL-CHIDERA\SQLEXPRESS01;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False")
+        public AtmDbConnection() : this(ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString)
         {
 
         }

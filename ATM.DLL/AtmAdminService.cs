@@ -11,7 +11,7 @@ namespace ATM.DLL
     {
         private readonly AtmDbConnection _dbContext;
         private bool _disposed;
-        private string _databaseName = "ATMDB";
+        private string _databaseName = "ADOATMDATABASE";
 
         public AtmAdminService(AtmDbConnection dbContext)  
         {

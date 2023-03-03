@@ -36,12 +36,12 @@ namespace ATM.BLL
                     {
                         Utility.Animation();
                         Console.Clear();
-                        Console.WriteLine("\n===============================================");
+                        Console.WriteLine("==============================================================");
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine("This is a valid card number");
                         Console.WriteLine($"Card number: {cardNum}");
                         Console.ResetColor();
-                        Console.WriteLine("===============================================\n");
+                        Console.WriteLine("==============================================================");
 
                         break;
                     }
@@ -80,12 +80,12 @@ namespace ATM.BLL
                         Utility.Animation();
                         Console.Clear();
                         Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("\n===============================================");
+                        Console.WriteLine("\n==============================================================");
                         Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine($"PIN: {pinNum}");
+                        Console.WriteLine($"AUTOMATED TELLER MACHINE");
                         Utility.SucessfullTransferPrompts("Congrats... You can now do your transactions");                        
                         Console.ResetColor();
-                        Console.WriteLine("===============================================\n");
+                        Console.WriteLine("==============================================================\n");
                         Console.ResetColor();
                         break;
                     }
