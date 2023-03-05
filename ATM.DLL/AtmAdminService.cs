@@ -61,7 +61,7 @@ namespace ATM.DLL
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 List<TransferViewModel> transferList = new List<TransferViewModel>();
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SqlDataReader reader = await command.ExecuteReaderAsync())
                 {
                     while (reader.Read())
                     {
@@ -96,7 +96,7 @@ namespace ATM.DLL
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 List<WithdrawViewModel> transferList = new List<WithdrawViewModel>();
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SqlDataReader reader = await command.ExecuteReaderAsync())
                 {
                     while (reader.Read())
                     {
@@ -117,9 +117,68 @@ namespace ATM.DLL
 
                 return transferList;
             }
-        }    
+        }
 
-      
+        public async Task ViewAllTransactions()
+        {
+            try
+            {
+                var connection = await _dbContext.OpenConnection();
+                string query = $"Use {_databaseName}; SELECT customer.CardNumber, customer.CustomerID, customer.Pin, " +
+                    $"customer.LogTime, deposit.AmountDeposited, deposit.DepositDescription, " +
+                    $"transfer.ReceiverAccount, transfer.AmountTransferred, transfer.TransferDescription, " +
+                    $"transfer.CreatedAt, withdraw.Balance, withdraw.AmountWithdrawn " +
+                    $"FROM Customers customer " +
+                    $"INNER JOIN Deposit deposit ON customer.CustomerID = deposit.DepositID " +
+                    $"INNER JOIN Transfer transfer ON customer.CustomerID = transfer.TransferID " +
+                    $"INNER JOIN Withdraw withdraw ON customer.CustomerID = withdraw.WithdrawID; ";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    using(SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        while (reader.Read())
+                        {                            
+                            var CardNumber = reader["CardNumber"].ToString();
+                            var CustomerID = int.Parse(reader["CustomerID"].ToString());
+                            var Pin = reader["Pin"].ToString();
+                            var LogTime = DateTime.Parse(reader["LogTime"].ToString());
+                            var AmountDeposited = int.Parse(reader["AmountDeposited"].ToString());
+                            var DepositedDescription = reader["DepositDescription"];
+                            var ReceiverAccount = reader["ReceiverAccount"];
+                            var AmountTransferred = int.Parse(reader["AmountTransferred"].ToString());
+                            var TransferDescription = reader["TransferDescription"];
+                            var CreatedAt = DateTime.Parse(reader["CreatedAt"].ToString());
+                            var Balance = int.Parse(reader["Balance"].ToString());
+                            var AmountWithdrawn = int.Parse(reader["AmountWithdrawn"].ToString());
+
+                          
+                            //Console.BackgroundColor= ConsoleColor.Blue;
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine($"ID: {CustomerID}, CardNumber: {CardNumber}, Pin: {Pin}, LogTime: {LogTime}" +
+                                $", Amount Deposited: {AmountDeposited}, Amount Withdrawn: {AmountWithdrawn}," +
+                                $" Amount Transferred: {AmountTransferred}" +
+                                $", Balance: {Balance}");
+                            Console.ResetColor();
+                            Console.WriteLine();
+                            
+                        }
+                    }
+
+
+                };
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.ToString());
+                Console.WriteLine(ex.StackTrace);
+                Console.WriteLine(ex.Source);
+            }            
+        }
+
+
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed)

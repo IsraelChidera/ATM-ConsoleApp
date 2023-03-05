@@ -18,9 +18,10 @@ namespace ATM.BLL
             {
                 await customerService.CreateDb();
                 await customerService.CreateCustomerTable();
+                await customerService.InsertCustomerData();
             }
-            
-        }      
+                      
+        }
 
         public async Task ValidateCardDetails()
         {
@@ -122,8 +123,6 @@ namespace ATM.BLL
             }
 
         }
-
-
         
         public async Task ValidateCustomerInputs()
         {

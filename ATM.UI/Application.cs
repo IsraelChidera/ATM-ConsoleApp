@@ -1,4 +1,6 @@
 ﻿using ATM.BLL;
+using ATM.DLL;
+using ATM.DLL.Interfaces;
 using ATM.DLL.Model;
 
 namespace ATM.UI
@@ -13,7 +15,17 @@ namespace ATM.UI
         AdminOperations adminOperations = new AdminOperations();
         public async Task Run()
         {
+            /*using (ICustomerInterface customerSeedData = new CustomerService(new AtmDbConnection()))
+            {
+                await customerSeedData.InsertCustomerData();
+            }
 
+            using (IOperations operationsSeedData = new OperationService(new AtmDbConnection()) )
+            {
+                await operationsSeedData.InsertTransferData();
+                await operationsSeedData.InsertDepositData();
+                await operationsSeedData.InsertWithdrawData();
+            }*/
 
             Utility.HomeContent();
 
@@ -44,7 +56,7 @@ namespace ATM.UI
                     case "0":
                         Console.WriteLine("Exit application");
                         check = false;
-                        break;
+                        return;
                     default:
                         Console.WriteLine("Incorrect Inputs... Try again!");
                         check = true;
@@ -78,14 +90,14 @@ namespace ATM.UI
                     switch (option)
                     {
                         case "1":
-                            Console.Clear();                            
+                            Console.Clear();
                             //Deposit class
                             await operations.RunDeposit();
                             goto start;
                         //check = false;
                         //break;
                         case "2":
-                            Console.Clear();                            
+                            Console.Clear();
                             //withdraw class
                             //AtmOperations operations = new AtmOperations();
                             await operations.RunWithdraw();
@@ -126,7 +138,7 @@ namespace ATM.UI
                 }
 
             }
-       
+
         }
 
         public async Task AdminLogin()
@@ -175,6 +187,7 @@ namespace ATM.UI
                     "\nPress 1: To view all deposit transactions " +
                     "\nPress 2: To view all transfer transactions " +
                     "\nPress 3: To view all withdrawal transactions " +
+                    "\nPress 4: To view all transactions " +
                     "\nPress 0: To exit\n");
                 string option = Console.ReadLine();
 
@@ -182,27 +195,31 @@ namespace ATM.UI
                 {
                     switch (option)
                     {
-                        case "1":                            
+                        case "1":
                             await adminOperations.GetDepositTransactions();
                             check = false;
                             //goto Start;
                             break;
-                        case "2":                            
+                        case "2":
                             //goto Start;
                             await adminOperations.GetTransferTransactions();
                             check = false;
                             break;
                         case "3":
-                            
+
                             await adminOperations.GetWithdrawTransactions();
                             //goto Start;
+                            check = false;
+                            break;
+                        case "4":
+                            await adminOperations.GetAllTransactions();
                             check = false;
                             break;
                         case "0":
                             Console.Clear();
                             Console.WriteLine("Exit application");
                             check = true;
-                            await Run();                            
+                            await Run();
                             break;
                         default:
                             Console.WriteLine("Incorrect Inputs... Try again!");
@@ -225,14 +242,12 @@ namespace ATM.UI
                 switch (options)
                 {
                     case "y":
-                        //Console.WriteLine();
                         goto Start;
-
                     case "n":
                         Console.Clear();
                         Console.WriteLine("Thank you!\n");
-                        await Run();
-                        return;
+                        await AdminTransactions();
+                        break;
                     default:
                         Console.WriteLine("Invalid inputs . . . Try again!");
                         goto Begin;

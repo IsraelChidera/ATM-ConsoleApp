@@ -136,6 +136,42 @@ namespace ATM.DLL
 
         }
 
+        public async Task InsertCustomerData()
+        {
+            try
+            {
+                var connection = await _dbContext.OpenConnection();
+                string AddCustomerData = $"Use {_databaseName};  INSERT INTO Customers(CardNumber, Pin, LogTime) " +
+                    $"VALUES('60677722', '0190', GETDATE()), " +
+                    $"('00921134', '0051', GETDATE()), " +
+                    $"('00633859', '4032', GETDATE()), " +
+                    $"('61596933', '2109', GETDATE()), " +
+                    $"('67221121', '5507', GETDATE()) ";
+
+                string checkCustomersTableQuery = $"Use {_databaseName}; SELECT COUNT(*) FROM Customers";
+                int count = 0;
+
+                using (SqlCommand command = new SqlCommand(checkCustomersTableQuery, connection))
+                {
+                    count = (int)await command.ExecuteScalarAsync();
+                };
+
+                if (count == 0)
+                {
+                    using (SqlCommand addCommand = new SqlCommand(AddCustomerData, connection))
+                    {
+                        await addCommand.ExecuteNonQueryAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+            }
+        }
+
+
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed)

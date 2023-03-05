@@ -54,7 +54,38 @@ namespace ATM.DLL
                     "VALUES( @Balance, @AmountWithdrawn) " +
                     "SELECT CAST(SCOPE_IDENTITY() AS BIGINT)";
 
-                using (SqlCommand command = new SqlCommand(query, connection))
+               
+
+                using (SqlCommand commands = new SqlCommand(query, connection))
+                {
+
+
+                    SqlParameter parameter = new SqlParameter()
+                    {
+                        ParameterName = "Balance",
+                        Value = withdraw.Balance,
+                        SqlDbType = SqlDbType.Int,
+                        Direction = ParameterDirection.Input,
+                    };
+                    commands.Parameters.Add(parameter);
+
+                    parameter = new SqlParameter()
+                    {
+                        ParameterName = "AmountWithdrawn",
+                        Value = withdraw.AmountWithdrawn,
+                        SqlDbType = SqlDbType.Int,
+                        Direction = ParameterDirection.Input,
+                    };
+                    commands.Parameters.Add(parameter);
+
+
+                    long withdrawId = (long)await commands.ExecuteScalarAsync();
+                    //Console.WriteLine($"You have succesfully added a withdraw data with Id:{(int)withdrawId} to the Db");
+                    return (int)withdrawId;
+                }
+
+
+                /*using (SqlCommand command = new SqlCommand(query, connection))
                 {
 
 
@@ -80,16 +111,124 @@ namespace ATM.DLL
                     long withdrawId = (long)await command.ExecuteScalarAsync();
                     //Console.WriteLine($"You have succesfully added a withdraw data with Id:{(int)withdrawId} to the Db");
                     return (int)withdrawId;
-                }
+                }*/
 
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+                Console.WriteLine(ex.Source);
+                Console.WriteLine(ex.ToString());
+                Console.WriteLine("wqaja");
                 return 0;
             }
         }
 
+        public async Task InsertWithdrawData()
+        {
+            try
+            {
+                var connection = await _dbContext.OpenConnection();
+                string AddWithdrawSeed = $"Use {_databaseName}; INSERT INTO Withdraw( Balance, AmountWithdrawn) " +
+                   $"VALUES(967666, 980), " +
+                   $"( 267666, 99980), " +
+                   $"(1067666, 8999) " +
+                   $"(67666, 892) " +
+                   $"(8066, 480) ";
+
+                string checkWithdrawTableQuery = $"Use {_databaseName}; SELECT COUNT(*) FROM Withdraw";
+                int count = 0;
+
+                using (SqlCommand command = new SqlCommand(checkWithdrawTableQuery, connection))
+                {
+                    count = (int)await command.ExecuteScalarAsync();
+                };
+
+                if (count == 0)
+                {
+                    using (SqlCommand addWithdrawSeed = new SqlCommand(AddWithdrawSeed, connection))
+                    {
+                        await addWithdrawSeed.ExecuteNonQueryAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                
+            }
+        }
+
+        public async Task InsertTransferData()
+        {
+            try
+            {
+                var connection = await _dbContext.OpenConnection();
+                string AddTransferSeed = $"Use {_databaseName}; INSERT INTO Transfer( ReceiverAccount, AmountTransferred, TransferDescription, CreatedAt) " +
+                    $"VALUES('90676660', '600', 'Money for food', GETDATE()), " +
+                    $"( '20076660', '465','Kroft payment', GETDATE()), " +
+                    $"( '00233455', '465','Kroft payment', GETDATE()), " +
+                    $"( '61076660', '465','Kroft payment', GETDATE()), " +
+                    $"('50076660', '39', 'Savings for car', GETDATE()); ";
+
+                string checkTransferTableQuery = $"Use {_databaseName}; SELECT COUNT(*) FROM Transfer";
+                int count = 0;
+
+                using (SqlCommand command = new SqlCommand(checkTransferTableQuery, connection))
+                {
+                    count = (int)await command.ExecuteScalarAsync();
+                };
+
+                if (count == 0)
+                {
+                    using (SqlCommand addTransferSeedCommand = new SqlCommand(AddTransferSeed, connection))
+                    {
+                        await addTransferSeedCommand.ExecuteNonQueryAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+            }
+        }
+
+        public async Task InsertDepositData()
+        {
+            try
+            {
+                var connection = await _dbContext.OpenConnection();
+                string AddDepositData = $"Use {_databaseName};  INSERT INTO Deposit( AmountDeposited, DepositDescription) " +
+                    $"VALUES(9067666, 'Money for food'), " +
+                    $"( 2007666, 'Kroft payment'), " +
+                    $"( 10400, 'Dish payment'), " +
+                    $"( 200050, 'Marketing payment'), " +
+                    $"(5007666, 'Savings for car') ";
+
+                string checkDepositTableQuery = $"Use {_databaseName}; SELECT COUNT(*) FROM Deposit";
+                int count = 0;
+
+                using (SqlCommand command = new SqlCommand(checkDepositTableQuery, connection))
+                {
+                    count = (int)await command.ExecuteScalarAsync();
+                };
+
+                if (count == 0)
+                {
+                    using (SqlCommand addCommand = new SqlCommand(AddDepositData, connection))
+                    {
+                        await addCommand.ExecuteNonQueryAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+            }
+        }
 
         //Deposit Operations
         public async Task CreateDepositTable()
@@ -168,6 +307,7 @@ namespace ATM.DLL
             }
 
         }
+
 
         //Transfer Operations
         public async Task CreateTransferTable()

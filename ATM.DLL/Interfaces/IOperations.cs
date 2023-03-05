@@ -17,5 +17,12 @@ namespace ATM.DLL.Interfaces
         Task CreateWithdrawTable();
 
         Task CreateDepositTable();
+
+        Task InsertWithdrawData();
+
+        Task InsertTransferData();
+
+        Task InsertDepositData();
+        
     }
 }

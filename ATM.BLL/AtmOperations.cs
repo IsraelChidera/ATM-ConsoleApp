@@ -59,6 +59,11 @@ namespace ATM.BLL
                     using (IOperations withdraw = new OperationService(new AtmDbConnection()))
                     {
                         await withdraw.CreateWithdrawTable();
+                        using (IOperations operationsSeedData = new OperationService(new AtmDbConnection()))
+                        {                            
+                            await operationsSeedData.InsertWithdrawData();
+                        }
+
                         WithdrawViewModel userWithdraw = new WithdrawViewModel
                         {
                             Balance = _balance,
@@ -100,11 +105,7 @@ namespace ATM.BLL
         }
 
         public async Task RunDeposit()
-        {
-            /*using (IOperations deposit = new OperationService(new AtmDbConnection()))
-            {
-                await deposit.CreateDepositTable();
-            }*/
+        {            
 
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("\n================================================================");
@@ -129,15 +130,7 @@ namespace ATM.BLL
                     Utility.ErrorPrompts("Invalid amount. Please try again.");
                     //Console.WriteLine("\nInvalid amount. Please try again.\n");
                     goto Start;
-                }
-
-            /*  if (int.TryParse(amount, out amt) && amt < 50)
-              {
-                  Console.Clear();
-                  Utility.ErrorPrompts("Error\nAmount to be deposited must be more than $50");
-                  //Console.WriteLine("Error\nAmount to be deposited must be more than $50");
-                  goto Start;
-              }*/
+                }          
 
 
             Description: Console.WriteLine("\nWrite a short description here ...");
@@ -157,6 +150,10 @@ namespace ATM.BLL
                     using (IOperations deposit = new OperationService(new AtmDbConnection()))
                     {
                         await deposit.CreateDepositTable();
+                        using (IOperations operationsSeedData = new OperationService(new AtmDbConnection()))
+                        {                            
+                            await operationsSeedData.InsertDepositData();                            
+                        }
                         DepositViewModel userDeposit = new DepositViewModel
                         {
                             DepositDescription = description,
@@ -222,16 +219,6 @@ namespace ATM.BLL
                         goto Receiver;
                     }
 
-                /* if (int.TryParse(receiverAccountNumber, out accountNumber) && receiverAccountNumber.Length < 6)
-                 {
-                     Console.Clear();
-                     Utility.ErrorPrompts("Invalid input.\nPlease enter a positive integer for the account number: ");
-                     //Console.WriteLine("\nInvalid input.\nPlease enter a positive integer for the account number: ");
-                     goto Receiver;
-                 }*/
-
-
-
 
                 Amount: Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("You can only transfer funds higher than $50");
@@ -244,18 +231,9 @@ namespace ATM.BLL
                     if (!int.TryParse(transferAmount, out Amount) || Amount < 50)
                     {
                         Console.Clear();
-                        Utility.ErrorPrompts("Invalid input.\nPlease enter a valid  ");
-                        //Console.Write("\nInvalid input.\nPlease enter a positive integer for the account number: ");
+                        Utility.ErrorPrompts("Invalid input.\nPlease enter a valid  ");                        
                         goto Amount;
-                    }
-
-                /*if (int.TryParse(transferAmount, out Amount) && Amount < 50)
-                {
-                    Console.Clear();
-                    Utility.ErrorPrompts("Invalid input.\nPlease enter a positive integer for the account number: ");
-                    //Console.WriteLine("\nInvalid input.\nPlease enter a positive integer for the account number: ");
-                    goto Amount;
-                }*/
+                    }              
 
                 Desc: Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.Write("Please enter the recipient's name: ");
@@ -264,8 +242,7 @@ namespace ATM.BLL
                     if (descriptions.Length < 3)
                     {
                         Console.Clear();
-                        Utility.ErrorPrompts("Invalid input.\nInput length must be greater than 3 ");
-                        //Console.WriteLine("\nInvalid input.\nInput length must be greater than 5 ");
+                        Utility.ErrorPrompts("Invalid input.\nInput length must be greater than 3 ");                        
                         goto Desc;
                     }
 
@@ -278,8 +255,7 @@ namespace ATM.BLL
                     {
                         _balance -= Amount;
 
-                        Utility.SucessfullTransferPrompts("Transfer successful.");
-                        //Console.WriteLine("\nTransfer successful.");
+                        Utility.SucessfullTransferPrompts("Transfer successful.");                        
                         Console.WriteLine("Your new balance is ${0}.", _balance);
 
                         string Account = receiverAccountNumber;
@@ -290,6 +266,10 @@ namespace ATM.BLL
                         using (IOperations transfer = new OperationService(new AtmDbConnection()))
                         {
                             await transfer.CreateTransferTable();
+                            using (IOperations operationsSeedData = new OperationService(new AtmDbConnection()))
+                            {
+                                await operationsSeedData.InsertTransferData();                                
+                            }
                             TransferViewModel userTransfer = new TransferViewModel
                             {
                                 ReceiverAccount = Account,

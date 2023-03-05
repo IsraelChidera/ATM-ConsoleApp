@@ -79,6 +79,21 @@ namespace ATM.BLL
 
         }
 
+        public async Task GetAllTransactions()
+        {
+            try
+            {
+                using (IAdminInterface admin = new AtmAdminService(new AtmDbConnection()))
+                {
+                    await admin.ViewAllTransactions();
+                }
+            }
+            catch
+            {
+                Utility.ErrorPrompts("Error. Unable to fetch all transactions");
+            }
+        }
+
 
     }
 }

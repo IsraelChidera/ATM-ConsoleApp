@@ -12,6 +12,8 @@ namespace ATM.DLL.Interfaces
         Task<IEnumerable<WithdrawViewModel>> WithdrawTransactions();
 
         Task<IEnumerable<TransferViewModel>> TransferTransactions();
-        
+
+        Task ViewAllTransactions();
+
     }
 }
